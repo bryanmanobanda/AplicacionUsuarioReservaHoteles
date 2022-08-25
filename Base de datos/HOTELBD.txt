@@ -1,0 +1,166 @@
+/*----------------------------POSTGRESQL --------------------------*/
+/*==============================================================*/
+/* Table: ADMINISTRADOR                                         */
+/*==============================================================*/
+create table ADMINISTRADOR (
+   ID_ADMIN             SERIAL              not null,
+   ID_HOTEL             int                  not null,
+   CONTINENTE        varchar(20)          not null,
+   NOMBRE               varchar(50)          not null,
+   CORREO               varchar(50)          not null,
+   CONTRASENIA          varchar(100)          not null,
+   TELEFONO             varchar(15)          not null,
+   constraint PK_ADMINISTRADOR primary key  (ID_ADMIN)
+);
+
+/*==============================================================*/
+/* Index: ADMINISTRA_FK                                         */
+/*==============================================================*/
+create index ADMINISTRA_FK on ADMINISTRADOR (
+ID_HOTEL ASC,
+CONTINENTE ASC
+);
+
+/*==============================================================*/
+/* Table: CLIENTE                                               */
+/*==============================================================*/
+create table CLIENTE (
+   ID_USUARIO           SERIAL              not null,
+   NOMBRE               varchar(50)          not null,
+   CORREO               varchar(50)          not null,
+   CONTRASENIA          varchar(100)         not null,
+   PAIS                 varchar(20)          not null,
+   FECHA_NAC            date		     not null,
+   constraint PK_CLIENTE primary key  (ID_USUARIO)
+);
+/*==============================================================*/
+/* Table: HABITACION                                            */
+/*==============================================================*/
+create table HABITACION (
+   ID_HOTEL             int		     not null,
+   CONTINENTE           varchar(20)          not null,
+   NUMEROHAB            int                  not null,
+   NOMBRE_TIPO          varchar(20)          not null,
+   DISPONIBILIDAD       int                  not null,
+   DESCRIPCION          varchar(150)         not null,
+   NUMCAMAS             int                  not null,   
+   PRECIO               numeric              not null,
+   constraint PK_HABITACION primary key  (ID_HOTEL, CONTINENTE, NUMEROHAB)
+);
+
+/*==============================================================*/
+/* Index: TIENE_FK                                              */
+/*==============================================================*/
+create index TIENE_FK on HABITACION (
+ID_HOTEL ASC,
+CONTINENTE ASC
+);
+
+/*==============================================================*/
+/* Index: POSEE_FK                                              */
+/*==============================================================*/
+create index POSEE_FK on HABITACION (
+NOMBRE_TIPO ASC
+);
+
+/*==============================================================*/
+/* Table: HABITACION_RESERVA                                    */
+/*==============================================================*/
+create table HABITACION_RESERVA (
+   ID_RESERVA           int                  not null,
+   ID_HOTEL             int                  not null,
+   CONTINENTE        varchar(20)          not null,
+   NUMEROHAB            int                  not null,
+   constraint PK_HABITACION_RESERVA primary key (ID_RESERVA, ID_HOTEL, CONTINENTE, NUMEROHAB)
+);
+
+/*==============================================================*/
+/* Index: PERTENECE2_FK                                         */
+/*==============================================================*/
+create index PERTENECE2_FK on HABITACION_RESERVA (
+ID_HOTEL ASC,
+CONTINENTE ASC,
+NUMEROHAB ASC
+);
+
+/*==============================================================*/
+/* Index: PERTENECE_FK                                          */
+/*==============================================================*/
+create index PERTENECE_FK on HABITACION_RESERVA (
+ID_RESERVA ASC
+);
+
+/*==============================================================*/
+/* Table: HOTEL                                                 */
+/*==============================================================*/
+create table HOTEL (
+   ID_HOTEL             int                  not null,
+   CONTINENTE           varchar(20)          not null,
+   NOMBRE               varchar(50)          not null,
+   DESCRIPCION          varchar(150)         not null,
+   PRESTIGIO            smallint             not null,
+   CORREO               varchar(50)          not null,
+   TELEFONO             varchar(15)          not null,
+   PAIS                 varchar(20)          not null,
+   CIUDAD               varchar(20)          not null,
+   constraint PK_HOTEL primary key  (ID_HOTEL, CONTINENTE)
+);
+
+/*==============================================================*/
+/* Table: RESERVA                                               */
+/*==============================================================*/
+create table RESERVA (
+   ID_RESERVA           SERIAL    	     not null,
+   ID_USUARIO           int                  not null,
+   FECHA_INICIO         date                 not null,
+   FECHA_FINAL          date                  not null,
+   PRECIO               numeric                not null,
+   constraint PK_RESERVA primary key  (ID_RESERVA)
+);
+
+/*==============================================================*/
+/* Index: REALIZA_FK                                            */
+/*==============================================================*/
+create index REALIZA_FK on RESERVA (
+ID_USUARIO ASC
+);
+
+/*==============================================================*/
+/* Table: TIPO_HAB                                              */
+/*==============================================================*/
+create table TIPO_HAB (
+   NOMBRE_TIPO          varchar(20)          not null,
+   NUMBANIOS            smallint             not null,
+   CAPACIDAD            smallint             not null,
+   constraint PK_TIPO_HAB primary key  (NOMBRE_TIPO)
+);
+
+alter table ADMINISTRADOR
+   add constraint FK_ADMINIST_ADMINISTR_HOTEL foreign key (ID_HOTEL, CONTINENTE)
+      references HOTEL (ID_HOTEL, CONTINENTE)
+
+
+alter table HABITACION
+   add constraint FK_HABITACI_POSEE_TIPO_HAB foreign key (NOMBRE_TIPO)
+      references TIPO_HAB (NOMBRE_TIPO)
+
+
+alter table HABITACION
+   add constraint FK_HABITACI_TIENE_HOTEL foreign key (ID_HOTEL, CONTINENTE)
+      references HOTEL (ID_HOTEL, CONTINENTE)
+
+
+alter table HABITACION_RESERVA
+   add constraint FK_HABITACI_PERTENECE_RESERVA foreign key (ID_RESERVA)
+      references RESERVA (ID_RESERVA)
+
+
+alter table HABITACION_RESERVA
+   add constraint FK_HABITACI_PERTENECE_HABITACI foreign key (ID_HOTEL, CONTINENTE, NUMEROHAB)
+      references HABITACION (ID_HOTEL, CONTINENTE, NUMEROHAB)
+
+
+alter table RESERVA
+   add constraint FK_RESERVA_REALIZA_CLIENTE foreign key (ID_USUARIO)
+      references CLIENTE (ID_USUARIO)
+
