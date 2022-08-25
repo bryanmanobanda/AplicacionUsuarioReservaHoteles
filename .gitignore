@@ -30,3 +30,4 @@ sqljdbc_auth.dll
 .idea/
 /build/
 /dist/
+nbproject/private/private.properties
