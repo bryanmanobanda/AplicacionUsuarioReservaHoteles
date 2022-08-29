@@ -48,6 +48,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
   int xMouse, yMouse, numeroHabitacion = 0,  c = -1;
   JButtonRound boton;
   JFAcceso acceso;
+  JFReserva jfreservas;
   JPIniciarSesion inicio;
   JPRegistrar registro;
   Hotel hotelesc;
@@ -69,6 +70,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
   JButton registrar = new JButton();
   JButton reservar = new JButton();
   JButton cerrarSesion = new JButton();
+  JButton misReservas = new JButton();
   JButton atras = new JButton();
   SQLReserva reservarConex = new SQLReserva();
   Reserva reserva;
@@ -90,12 +92,14 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     boton = new JButtonRound(jbRegistrar);
     boton = new JButtonRound(JbIniciar);
     boton = new JButtonRound(cerrarSesion);
+    boton = new JButtonRound(misReservas);
     boton = new JButtonRound(atras);
     this.setMinimumSize(new Dimension(1000,600));
     jPBarra.setPreferredSize(new Dimension(1000, 24));
     encabezado.setLayout(new AbsoluteLayout());
     encabezado.setBackground(new Color(252,195,95));
     boton.botonCerrar(cerrarSesion);
+    boton.botonCerrar(misReservas);
     boton.botonReserva(reservar);
     boton.botonAtras(atras);
     boton.botonInicioAmarillo(JbIniciar);
@@ -108,6 +112,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     contenido.add(lista, BorderLayout.CENTER);
     paises = conexHotel.busquedaPaises();
     cerrarSesion.setVisible(false);
+    misReservas.setVisible(false);
     iniciar.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent me) {
@@ -118,6 +123,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           jbRegistrar.setVisible(false);
           JbIniciar.setVisible(false);
           cerrarSesion.setVisible(true);
+          misReservas.setVisible(true);
         }
       }
     });
@@ -129,6 +135,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         if(registro.getCliente() != null && registro.getCliente().getIdUsuario() != 0 ){
           cliente = registro.getCliente();
           cerrarSesion.setVisible(true);
+          misReservas.setVisible(true);
           acceso.dispose();
           jbRegistrar.setVisible(false);
           JbIniciar.setVisible(false);
@@ -187,6 +194,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         jbRegistrar.setVisible(true);
         JbIniciar.setVisible(true);
         cerrarSesion.setVisible(false);
+        misReservas.setVisible(false);
         cliente.setIdUsuario(0);
         limpiar();
         try {
@@ -196,6 +204,34 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         }
       }
 });
+    
+    misReservas.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent me) {
+        super.mouseClicked(me);
+        
+        try {
+        jfreservas = new JFReserva(){
+          @Override
+          public void dispose(){
+            getFrame().setVisible(true);
+            super.dispose();
+          }
+        };
+          //inicio.add(iniciar,  new AbsoluteConstraints(30, 270, -1, -1));
+          //registro.add(registrar, new AbsoluteConstraints(30, 330, -1, -1));
+          //jfreservas.habilitarPanel(inicio, registro, "Registrar");
+          jfreservas.ingreso(cliente);
+          jfreservas.agregarReservas();
+          jfreservas.setVisible(true);
+          
+          dispose();
+         } catch (ParseException | SQLException | ClassNotFoundException ex) {
+        Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+      }
+    }
+    
+});    
     logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
     logo.addMouseListener(new MouseAdapter() {
       @Override
@@ -237,6 +273,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }
 });
     encabezado.add(cerrarSesion, new AbsoluteConstraints(890, 20, -1, -1));
+    encabezado.add(misReservas, new AbsoluteConstraints(750, 20, -1, -1));
     agregarHotel();
   }
     

@@ -23,7 +23,7 @@ public class ListaHabitaciones extends JPanel implements ItemListener{
   private final Color pieCol = new Color(195,116,94);
   private final Font Ftitulo = new Font("Open Sans Semibold", Font.BOLD, 18);
   JComboBox combo = new JComboBox();
-  //JComboBoxRound busqueda = new JComboBoxRound(combo);
+  JComboBoxRound busqueda = new JComboBoxRound(combo);
   JScrollPane jsPanel = new JScrollPane();
   public JPanel panel = new JPanel(new GridLayout(0, 3, 30, 30));
   public JPanel pie = new JPanel(new AbsoluteLayout());
