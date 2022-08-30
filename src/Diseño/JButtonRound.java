@@ -92,4 +92,18 @@ public class JButtonRound extends JButton{
     jBoton.setRolloverIcon(new ImageIcon((getClass().getResource("/Assets/BotonesAccion/cerrarover.png"))));
     jBoton.setPressedIcon(new ImageIcon((getClass().getResource("/Assets/BotonesAccion/cerrarpress.png"))));    
   }
+  
+  public void misReservas(JButton jBoton){
+    jBoton.setIcon(new ImageIcon((getClass().getResource("/Assets/BotonesAccion/btnMReserva_normal.png"))));
+    jBoton.setDisabledIcon(new ImageIcon((getClass().getResource("/Assets/BotonesAccion/btnMReserva_normal.png"))));
+    jBoton.setRolloverIcon(new ImageIcon((getClass().getResource("/Assets/BotonesAccion/mreservasover.png"))));
+    jBoton.setPressedIcon(new ImageIcon((getClass().getResource("/Assets/BotonesAccion/mreservaspress.png"))));    
+  }
+  
+   public void modificarContrasenia(JButton jBoton){
+    jBoton.setIcon(new ImageIcon((getClass().getResource("/Assets/BotonesAccion/contraNormal.png"))));
+    jBoton.setDisabledIcon(new ImageIcon((getClass().getResource("/Assets/BotonesAccion/contraNormal.png"))));
+    jBoton.setRolloverIcon(new ImageIcon((getClass().getResource("/Assets/BotonesAccion/contraover.png"))));
+    jBoton.setPressedIcon(new ImageIcon((getClass().getResource("/Assets/BotonesAccion/contrapress.png"))));    
+  }
 }

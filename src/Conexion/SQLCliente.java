@@ -51,22 +51,18 @@ public  class SQLCliente {
                 cliente.setFechaNacimiento(rs.getDate("FECHA_NAC"));
                 return true;
             }
-            System.out.println("Contraseña incorrecta");
+            
             return false;
         }
-        System.out.println("Usuario no encontrado");
         return false;
     }
 
-    public void modificarUsuario(Cliente cliente) throws SQLException, ClassNotFoundException {
+    public void modificarContrasenia(Cliente cliente) throws SQLException, ClassNotFoundException {
         ConexionBaseDatos con = new ConexionBaseDatos();
         Connection connection = con.getConnection();
-        ps = connection.prepareStatement("update CLIENTE set NOMBRE=?, CORREO=?, PAIS=?, FECHA_NAC=? where ID_USUARIO=?");
-        ps.setString(1, cliente.getNombre());
-        ps.setString(2, cliente.getCorreo());
-        ps.setString(3, cliente.getPais());
-        ps.setDate(4, cliente.getFechaNacimiento());
-        ps.setInt(5, cliente.getIdUsuario());
+        ps = connection.prepareStatement("update CLIENTE set contrasenia=? where ID_USUARIO=?");
+        ps.setString(1, cliente.getContrasenia());
+        ps.setInt(2, cliente.getIdUsuario());
         ps.executeUpdate();
     }
 

@@ -26,8 +26,9 @@ public class DescReservaPanel extends JPanel {
     descripcion.setVerticalAlignment(SwingConstants.TOP);
     picon.setBackground(principal);
     informacion.setBackground(principal);
-    ubicacion.setText(reserva.getContinente());
+    ubicacion.setText(reserva.getContinente());//Nombre hotel y direccion
     descripcion.setText("<html>"+"Fecha inicio: "+reserva.getFechaInicio().toString()+"<br>"+"Fecha fin: "+reserva.getFechaFin().toString()+"<br>"+"Precio total: $"+String.valueOf(reserva.getPrecioFinal())+"</html>");
+    //numerp de habitacion, nombre del hotel, numero de habitaciones
     informacion.add(ubicacion, BorderLayout.NORTH);
     informacion.add(descripcion, BorderLayout.CENTER);
     this.add(informacion, BorderLayout.CENTER);

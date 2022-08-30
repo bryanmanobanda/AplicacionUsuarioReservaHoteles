@@ -1,21 +1,16 @@
 package Interfaces;
 
 import CRUD.Cliente;
-import CRUD.Hotel;
 import CRUD.Reserva;
+import Conexion.CifrarContrasenia;
 import Conexion.SQLCliente;
-import Conexion.SQLHotel;
+import Conexion.SQLHabitacion_Reserva;
 import Conexion.SQLReserva;
-import Diseño.CajaHotel;
 import Diseño.CajaReserva;
 import Diseño.JButtonRound;
 import Diseño.JLabelTitle;
 import Diseño.JTextFieldRound;
-import Diseño.ListaHabitaciones;
 import Diseño.ListaReservas;
-import Paneles.JPIniciarSesion;
-import Paneles.JPRegistrar;
-
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -28,52 +23,31 @@ import javax.swing.JOptionPane;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 public class JFReserva extends javax.swing.JFrame{
-  //JPIniciarSesion inicio;
-  //JPRegistrar registro;
-  //Administrador admin;
-    ArrayList<Reserva> listaReserva;
-    SQLReserva conexReserva = new SQLReserva();
+    int respuesta, xMouse, yMouse, tamText = 20, x =20, y = 10 ;
     Cliente cliente;
     CajaReserva reservaSel;
+    CifrarContrasenia cifrado;
     ListaReservas listaReserva1;
-    SQLCliente conexCliente;
-  //SQLAdministrador  conexAdmin;
-  JButtonRound uiBoton;
-  JLabelTitle titulo;
-  //JPAdmin admind;
-  JTextFieldRound tnombre, tcorreo, tpais, tfechaNac;
-  Dimension dimensionCuadro = new Dimension(210, 25);
-  int xMouse, yMouse, tamText = 20, x =20, y = 10 ;
+    JButtonRound boton;
+    JLabelTitle titulo;
+    Reserva reservaEliminar;
+    ArrayList<Reserva> listaReserva;
+    JTextFieldRound tnombre, tcorreo, tpais, tfechaNac;
+    Dimension dimensionCuadro = new Dimension(210, 25);
+    SQLReserva conexReserva = new SQLReserva();
+    SQLHabitacion_Reserva conexHabitacionReserva = new SQLHabitacion_Reserva();
+    SQLCliente conexCliente = new SQLCliente();
   public JFReserva() throws ParseException, ClassNotFoundException, SQLException {
     initComponents();
-    //admind = new JPAdmin();
-    //this.setPreferredSize(new Dimension(1200, 476));
-    //jPEntorno.setPreferredSize(new Dimension(760, 500));
     titulo = new JLabelTitle("Nombre", nombre, tamText);
     titulo = new JLabelTitle("Correo", correo, tamText);
     titulo = new JLabelTitle("País", pais, tamText);
     titulo = new JLabelTitle("Fecha Nacimiento", fechaNac, tamText);
-    tnombre = new JTextFieldRound(""){
-      @Override
-      public void mousePressed(MouseEvent me) {
-      }
-    };
-    tcorreo = new JTextFieldRound(""){
-      @Override
-      public void mousePressed(MouseEvent me) {
-      }
-    };
-    tpais = new JTextFieldRound(""){
-      @Override
-      public void mousePressed(MouseEvent me) {
-      }
-    };
-    tfechaNac = new JTextFieldRound(""){
-      @Override
-      public void mousePressed(MouseEvent me) {
-      }
-    };
-    
+    boton = new JButtonRound(jBCambiarPassword);
+    tnombre = new JTextFieldRound("");
+    tcorreo = new JTextFieldRound("");
+    tpais = new JTextFieldRound("");
+    tfechaNac = new JTextFieldRound("");
     tnombre.setEnabled(false);
     tcorreo.setEnabled(false);
     tpais.setEnabled(false);
@@ -82,6 +56,7 @@ public class JFReserva extends javax.swing.JFrame{
     tcorreo.setPreferredSize(dimensionCuadro);
     tpais.setPreferredSize(dimensionCuadro);
     tfechaNac.setPreferredSize(dimensionCuadro);
+    boton.modificarContrasenia(jBCambiarPassword);
     jPLateral.add(nombre, new AbsoluteConstraints(x, 200 + y,-1, -1));
     jPLateral.add(tnombre, new AbsoluteConstraints(x, 225 + y,-1, -1));
     jPLateral.add(correo, new AbsoluteConstraints(x, 255 + y,-1, -1));
@@ -90,8 +65,8 @@ public class JFReserva extends javax.swing.JFrame{
     jPLateral.add(tpais, new AbsoluteConstraints(x, 335 + y,-1, -1));
     jPLateral.add(fechaNac, new AbsoluteConstraints(x, 365 + y,-1, -1));
     jPLateral.add(tfechaNac, new AbsoluteConstraints(x, 390 + y,-1, -1));
+    jPLateral.add(jBCambiarPassword, new AbsoluteConstraints(x+40, 420 + y,-1, -1));
     listaReserva1 = new ListaReservas();
-    //jPEntorno.add(admind, BorderLayout.CENTER);
     jPEntorno.add(listaReserva1, BorderLayout.CENTER);
     jPEntorno.validate();
     this.setResizable(false);
@@ -104,31 +79,24 @@ public class JFReserva extends javax.swing.JFrame{
       reservaSel = new CajaReserva(listaReserva.get(i)){
         @Override
         public void mouseClicked(MouseEvent me) {
-            JOptionPane.showMessageDialog(null, "¿Desea eliminar la reserva? Bueno toca hacer la lógica XD", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))));
-          /*if(cliente != null && cliente.getIdUsuario() != 0){
-          super.mouseClicked(me);
-          try {
-            hotelesc = super.getHotelSelec();
-            listahabitacion = conexHabitacion.busquedaPorHotel(hotelesc);
-            agregarHabitacion();
-            contenido.add(listaHab, BorderLayout.CENTER);
-            listaHab.setVisible(true);
-            listaHab.panel.setVisible(true);
-            listaHab.pie.setVisible(true);
-            listaHab.busque.setVisible(true);
-            lista.setVisible(false);
-            contenido.validate();
-          } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-          }
-          }else{
-            JOptionPane.showMessageDialog(null, "Registre o inicie sesión", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))));
-          }*/
+            respuesta = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la reserva?","",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE,new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))));
+            if(respuesta == 0 ){
+                super.mouseClicked(me);
+                try {
+                    reservaEliminar = super.getreservaSelec();
+                    conexHabitacionReserva.eliminarHabitacionReserva(reservaEliminar);
+                    conexReserva.eliminarReserva(reservaEliminar);
+                    listaReserva1.limpiar();
+                    agregarReservas();
+                } catch (SQLException | ClassNotFoundException ex) {
+                    Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JOptionPane.showMessageDialog(null, "Reservada eliminada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/exitoEs.png"))));
+            }
         }
       };
       listaReserva1.arreglo(reservaSel);
     }
-    
     jPEntorno.validate();
   }
   
@@ -152,6 +120,7 @@ public class JFReserva extends javax.swing.JFrame{
         correo = new javax.swing.JLabel();
         fechaNac = new javax.swing.JLabel();
         pais = new javax.swing.JLabel();
+        jBCambiarPassword = new javax.swing.JButton();
         jPBarra = new javax.swing.JPanel();
         jlCerrar = new javax.swing.JLabel();
         jPCerrar = new javax.swing.JPanel();
@@ -162,7 +131,6 @@ public class JFReserva extends javax.swing.JFrame{
         setBackground(new java.awt.Color(147, 171, 169));
         setMinimumSize(new java.awt.Dimension(629, 481));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(629, 481));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -179,7 +147,7 @@ public class JFReserva extends javax.swing.JFrame{
         jBLogo.setBorderPainted(false);
         jBLogo.setContentAreaFilled(false);
         jBLogo.setFocusPainted(false);
-        jPLateral.add(jBLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
+        jPLateral.add(jBLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Dialogo/Usuarioper.png"))); // NOI18N
@@ -196,6 +164,14 @@ public class JFReserva extends javax.swing.JFrame{
 
         pais.setText("jLabel4");
         jPLateral.add(pais, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, -1, -1));
+
+        jBCambiarPassword.setText("jButton1");
+        jBCambiarPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBCambiarPasswordActionPerformed(evt);
+            }
+        });
+        jPLateral.add(jBCambiarPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, -1, -1));
 
         getContentPane().add(jPLateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 24, 240, 457));
 
@@ -275,6 +251,42 @@ public class JFReserva extends javax.swing.JFrame{
     jlCerrar.setForeground(Color.black);
   }//GEN-LAST:event_jPCerrarMouseExited
 
+    private void jBCambiarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCambiarPasswordActionPerformed
+        int resp = JOptionPane.showConfirmDialog(null, "¿Desea cambiar la contraseña?","",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE,new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))));
+        Object anteriorO;
+        String anterior;
+        if(resp == 0 ){
+            while(true){
+                anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña anterior", "", JOptionPane.QUESTION_MESSAGE,new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))),null,DISPOSE_ON_CLOSE);
+                if(anteriorO != null){
+                    anterior = (String) anteriorO;
+                    if(cliente.getContrasenia().equals(cifrado.md5(anterior))){
+                        anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña nueva", "", JOptionPane.ERROR_MESSAGE,new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))),null,DISPOSE_ON_CLOSE);
+                        if(anteriorO != null){
+                            String nueva = (String)  anteriorO;
+                            cliente.setContrasenia(cifrado.md5(nueva));
+                            try {
+                                conexCliente.modificarContrasenia(cliente);
+                            } catch (SQLException | ClassNotFoundException ex) {
+                                Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            JOptionPane.showMessageDialog(null, "Contraseña cambiada exitosamente", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/listo.png"))));
+                            break;
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Contraseña no cambiada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
+                            break;
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Contraseña ingresada no valida", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Contraseña no cambiada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
+                    break;
+                }
+            }
+        }
+    }//GEN-LAST:event_jBCambiarPasswordActionPerformed
+
   /**
    * @param args the command line arguments
    */
@@ -320,6 +332,7 @@ public class JFReserva extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel correo;
     private javax.swing.JLabel fechaNac;
+    private javax.swing.JButton jBCambiarPassword;
     private javax.swing.JButton jBLogo;
     private javax.swing.JLabel jLEncabezado;
     private javax.swing.JLabel jLabel1;
@@ -333,4 +346,3 @@ public class JFReserva extends javax.swing.JFrame{
     private javax.swing.JLabel pais;
     // End of variables declaration//GEN-END:variables
 }
-

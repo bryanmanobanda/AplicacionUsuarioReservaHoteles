@@ -51,7 +51,7 @@ public class CajaReserva extends JButton implements MouseListener, ActionListene
     JPTitulo.setSize(87,15);
     JPTitulo.add(titulo, BorderLayout.CENTER);
     JPIcono.setBackground(principal);
-    icon.setIcon(new ImageIcon((getClass().getResource("/Assets/Dialogo/reserva.png"))));
+    icon.setIcon(new ImageIcon((getClass().getResource("/Assets/Dialogo/reservado.png"))));
     JPIcono.add(icon, BorderLayout.CENTER);
     this.add(JPIcono, BorderLayout.WEST);
     this.add(informacion, BorderLayout.CENTER);
@@ -59,16 +59,15 @@ public class CajaReserva extends JButton implements MouseListener, ActionListene
     addMouseListener(this);
     addActionListener(this);
   }
-  
- /*
-  public Hotel getHotelSelec() {
-    return hotelSelec;
+
+  public Reserva getreservaSelec() {
+    return reservaSelec;
   }
 
-  public void setHotelSelec(Hotel hotelSelec) {
-    this.hotelSelec = hotelSelec;
+  public void setHotelSelec(Reserva reservaSelec) {
+    this.reservaSelec = reservaSelec;
   }
-*/
+
   @Override
   public void mouseClicked(MouseEvent me) {
   }

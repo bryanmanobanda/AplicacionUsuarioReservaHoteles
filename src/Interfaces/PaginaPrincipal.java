@@ -99,7 +99,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     encabezado.setLayout(new AbsoluteLayout());
     encabezado.setBackground(new Color(252,195,95));
     boton.botonCerrar(cerrarSesion);
-    boton.botonCerrar(misReservas);
+    boton.misReservas(misReservas);
     boton.botonReserva(reservar);
     boton.botonAtras(atras);
     boton.botonInicioAmarillo(JbIniciar);
@@ -273,7 +273,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }
 });
     encabezado.add(cerrarSesion, new AbsoluteConstraints(890, 20, -1, -1));
-    encabezado.add(misReservas, new AbsoluteConstraints(750, 20, -1, -1));
+    encabezado.add(misReservas, new AbsoluteConstraints(770, 20, -1, -1));
     agregarHotel();
   }
     
