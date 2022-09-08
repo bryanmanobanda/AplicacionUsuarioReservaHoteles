@@ -16,45 +16,22 @@ public class Reserva {
         this.idReserva = idReserva;
     }
 
-    public Reserva(int idReserva, String continente, int idUsuario, Date fechaInicio, Date fechaFin, double precioFinal) {
-        this.idReserva = idReserva;
+    public Reserva(String continente, int idUsuario, Date fechaInicio, Date fechaFin, ArrayList<Habitacion> habitaciones, double precioFinal) {
         this.continente = continente;
         this.idUsuario = idUsuario;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.habitaciones = habitaciones;
         this.precioFinal = precioFinal;
     }
 
-    public Reserva(String continente, int idUsuario, Date fechaInicio, Date fechaFin, ArrayList<Habitacion> habitaciones, double precioFinal) {
-      this.continente = continente;
-      this.idUsuario = idUsuario;
-      this.fechaInicio = fechaInicio;
-      this.fechaFin = fechaFin;
-      this.habitaciones = habitaciones;
-      this.precioFinal = precioFinal;
-    }
-    
-    public void cambiarEstado(){
-      for(int i = 0; i < this.habitaciones.size();i++)
-        this.habitaciones.get(i).setDisponibilidad(false);
-    }
-
-    public void agregarHabitacion(Habitacion nuevaHabitacion){
-        this.habitaciones.add(nuevaHabitacion);
-    }
-
-    public void removerHabiracion(Habitacion removerHabitacion){
-        if (!this.habitaciones.removeIf(habitacion -> habitacion.equals(removerHabitacion))) {
-            System.out.println("No hay habitacion");
-        }
+    public void cambiarEstado() {
+        for (Habitacion habitaciones : this.habitaciones)
+            habitaciones.setDisponibilidad(false);
     }
 
     public int getIdReserva() {
         return idReserva;
-    }
-
-    public void setIdReserva(int idReserva) {
-        this.idReserva = idReserva;
     }
 
     public Date getFechaInicio() {
@@ -71,10 +48,6 @@ public class Reserva {
 
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
-    }
-
-    public ArrayList<Habitacion> getHabitaciones() {
-        return habitaciones;
     }
 
     public void setHabitaciones(ArrayList<Habitacion> habitaciones) {

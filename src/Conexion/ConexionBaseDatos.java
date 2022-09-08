@@ -6,9 +6,8 @@ import java.sql.SQLException;
 
 public class ConexionBaseDatos {
   public static final String URL = "jdbc:postgresql://localhost:5432/RESERVA_HOTEL";
-  public Connection getConnection() throws ClassNotFoundException, SQLException{
-    Connection connection = null;
-    connection = DriverManager.getConnection(URL,"Administrador_Hotel","admin");
-    return connection;
+
+  public static Connection getConnection() throws SQLException{
+    return DriverManager.getConnection(URL,"Administrador_Hotel","admin");
   }
 }

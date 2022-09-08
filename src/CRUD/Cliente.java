@@ -1,7 +1,6 @@
 package CRUD;
 
 import java.sql.Date;
-import java.util.ArrayList;
 
 public class Cliente {
     private int idUsuario;
@@ -10,7 +9,6 @@ public class Cliente {
     private String contrasenia;
     private String pais;
     private Date fechaNacimiento;
-    private ArrayList<Reserva> reservas;
 
     public Cliente(String correo, String contrasenia) {
         this.correo = correo;
@@ -27,29 +25,6 @@ public class Cliente {
 
     public Cliente() {
 
-    }
-
-    public void agregarReserva(Reserva reserva) {
-        this.reservas.add(reserva);
-    }
-
-    public void quitarReserva(int idReserva) {
-        Reserva aux = reservas.get(buscarReserva(idReserva));
-        this.reservas.remove(aux);
-    }
-
-    public void quitarReserva(Reserva reserva){
-        this.reservas.remove(reserva);
-    }
-
-    public int buscarReserva(int idReserva) {
-        for (Reserva reserva : this.reservas) {
-            if (reserva.getIdReserva() == idReserva) {
-                return reservas.indexOf(reserva);
-            }
-        }
-        System.out.println("No existe tal reserva");
-        return -1;
     }
 
     public int getIdUsuario() {
@@ -100,11 +75,7 @@ public class Cliente {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public ArrayList<Reserva> getReservas() {
-        return reservas;
-    }
-
-    public void setReservas(ArrayList<Reserva> reservas) {
-        this.reservas = reservas;
+    public boolean validarContrasenia(String contrasenia) {
+        return this.contrasenia.equals(contrasenia);
     }
 }

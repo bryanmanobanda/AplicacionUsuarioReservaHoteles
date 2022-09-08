@@ -1,7 +1,5 @@
 package CRUD;
 
-import java.util.ArrayList;
-
 public class Hotel {
   private int idHotel;  
   private String nombre;
@@ -12,8 +10,6 @@ public class Hotel {
   private String telefono;
   private String pais;
   private String ciudad;
-  private ArrayList<Habitacion> habitaciones;
-  private ArrayList<Administrador> administradores;
 
   public Hotel() {
     this.idHotel = 0;
@@ -111,27 +107,4 @@ public class Hotel {
   public void setCiudad(String ciudad) {
     this.ciudad = ciudad;
   }
-
-  public ArrayList<Habitacion> getHabitaciones() {
-    return habitaciones;
-  }
-
-  public void setHabitaciones(ArrayList<Habitacion> habitaciones) {
-    this.habitaciones = habitaciones;
-  }
-
-  public ArrayList<Administrador> getAdministradores() {
-    return administradores;
-  }
-
-  public void setAdministradores(ArrayList<Administrador> administradores) {
-    this.administradores = administradores;
-  }
-
-  @Override
-  public String toString() {
-    return "Hotel{" + "idHotel=" + idHotel + ", nombre=" + nombre + ", continente=" + continente + ", descripcion=" + descripcion + ", prestigio=" + prestigio + ", correo=" + correo + ", telefono=" + telefono + ", pais=" + pais + ", ciudad=" + ciudad + ", habitaciones=" + habitaciones + ", administradores=" + administradores + '}';
-  }
-  
-  
 }

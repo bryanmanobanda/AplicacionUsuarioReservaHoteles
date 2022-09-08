@@ -9,19 +9,9 @@ public class TipoHabitacion {
         this.nombreTipo = nombreTipo;
     }
 
-    public TipoHabitacion(String nombreTipo, int capacidad, int numBanios) {
-        this.nombreTipo = nombreTipo;
-        this.capacidad = capacidad;
-        this.numBanios = numBanios;
-    }
-
 
     public String getNombreTipo() {
         return nombreTipo;
-    }
-
-    public void setNombreTipo(String nombreTipo) {
-        this.nombreTipo = nombreTipo;
     }
 
     public int getCapacidad() {

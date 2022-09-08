@@ -4,7 +4,6 @@ import CRUD.Cliente;
 import CRUD.Habitacion;
 import CRUD.Hotel;
 import CRUD.Reserva;
-//import Conexion.ConexionBaseDatos;
 import Conexion.SQLHabitacion;
 import Conexion.SQLHabitacion_Reserva;
 import Conexion.SQLHotel;
@@ -18,26 +17,21 @@ import Diseño.UIInforme;
 import Paneles.JPIniciarSesion;
 import Paneles.JPRegistrar;
 import Paneles.JPReserva;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-///import java.sql.Connection;
 import java.sql.Date;
-//import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
@@ -66,8 +60,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
   ArrayList<Habitacion> listahabitacion, habitacionSelect;
   ArrayList<CajaHabitacion>habitacionreserva;
   JButton cont = new JButton();
-  JButton iniciar = new JButton();
-  JButton registrar = new JButton();
+  JButton iniciar;
+  JButton registrar;
   JButton reservar = new JButton();
   JButton cerrarSesion = new JButton();
   JButton misReservas = new JButton();
@@ -80,7 +74,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     setLocationRelativeTo(null);
     habitacionSelect = new ArrayList<>();
     boton = new JButtonRound(cont);
-    logo = new JButton(new ImageIcon(getClass().getResource("/Assets/Logo/logo.png")));
+    logo = new JButton(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Logo/logo.png"))));
     registro = new JPRegistrar();
     jpreserva = new JPReserva();
     lista = new ListaHoteles();
@@ -148,28 +142,28 @@ public class PaginaPrincipal extends javax.swing.JFrame {
       @Override
       public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
-        if(jpreserva.jDateFinal.getText().compareTo(jpreserva.jDateInicio.getText()) == 0 || jpreserva.jDateFinal.getText().compareTo(jpreserva.jDateInicio.getText()) == -1 || jpreserva.jDateFinal.getText().isEmpty()){
-          JOptionPane.showMessageDialog(null, "Escoja fechas validas", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
+        if(jpreserva.jDateFinal.getText().compareTo(jpreserva.jDateInicio.getText()) == 0 || jpreserva.jDateFinal.getText().compareTo(jpreserva.jDateInicio.getText()) < 0 || jpreserva.jDateFinal.getText().isEmpty()){
+          JOptionPane.showMessageDialog(null, "Escoja fechas validas", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
         }else{
-        for(int i = 0; i< habitacionreserva.size(); i++){
-          habitacionSelect.add(habitacionreserva.get(i).getHabitacionselec());
-        }
+          for (CajaHabitacion cajaHabitacion : habitacionreserva) {
+            habitacionSelect.add(cajaHabitacion.getHabitacionselec());
+          }
         reserva = new Reserva(hotelesc.getContinente(),cliente.getIdUsuario(),Date.valueOf(jpreserva.jDateInicio.getText()), Date.valueOf(jpreserva.jDateFinal.getText()), habitacionSelect,jpreserva.precioHab);
         reserva.cambiarEstado();
-          for(int i = 0; i< habitacionSelect.size(); i++){
-          try {
-            conexHabitacion.modificarHabitacion(habitacionSelect.get(i));
-          } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+          for (Habitacion habitacion : habitacionSelect) {
+            try {
+              conexHabitacion.modificarHabitacion(habitacion);
+            } catch (SQLException | ClassNotFoundException ex) {
+              Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
           }
-        }
         try {
           reservarConex.insertarReserva(reserva);
-          listareserva = reservarConex.buscarTopReserva(cliente);
-          for(int i = 0; i< habitacionSelect.size(); i++){
-            habitacionRes.insertarHabitacionReserva(habitacionSelect.get(i), listareserva.get(0));
+          listareserva = reservarConex.listarReservasPorCliente(cliente);
+          for (Habitacion habitacion : habitacionSelect) {
+            habitacionRes.insertarHabitacionReserva(habitacion, listareserva.get(0));
           }
-          JOptionPane.showMessageDialog(null, "Reserva realizada exitosamente", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/viajeEs.png"))));
+          JOptionPane.showMessageDialog(null, "Reserva realizada exitosamente", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/viajeEs.png")))));
         } catch (SQLException | ClassNotFoundException ex) {
           Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -190,7 +184,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
       @Override
       public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
-        JOptionPane.showMessageDialog(null, "Se ha cerrado la sesión", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/listo.png"))));
+        JOptionPane.showMessageDialog(null, "Se ha cerrado la sesión", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/listo.png")))));
         jbRegistrar.setVisible(true);
         JbIniciar.setVisible(true);
         cerrarSesion.setVisible(false);
@@ -279,29 +273,29 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     
   public void agregarHotel( ) throws ClassNotFoundException, SQLException{
     listaHab = new ListaHabitaciones();
-    listahotel = conexHotel.busqueda();
-    for (int i = 0; i < listahotel.size(); i++){
-      hotelsel = new CajaHotel(listahotel.get(i)){
+    listahotel = conexHotel.listarHoteles();
+    for (Hotel hotel : listahotel) {
+      hotelsel = new CajaHotel(hotel) {
         @Override
         public void mouseClicked(MouseEvent me) {
-          if(cliente != null && cliente.getIdUsuario() != 0){
-          super.mouseClicked(me);
-          try {
-            hotelesc = super.getHotelSelec();
-            listahabitacion = conexHabitacion.busquedaPorHotel(hotelesc);
-            agregarHabitacion();
-            contenido.add(listaHab, BorderLayout.CENTER);
-            listaHab.setVisible(true);
-            listaHab.panel.setVisible(true);
-            listaHab.pie.setVisible(true);
-            listaHab.busque.setVisible(true);
-            lista.setVisible(false);
-            contenido.validate();
-          } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-          }
-          }else{
-            JOptionPane.showMessageDialog(null, "Registre o inicie sesión", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))));
+          if (cliente != null && cliente.getIdUsuario() != 0) {
+            super.mouseClicked(me);
+            try {
+              hotelesc = super.getHotelSelec();
+              listahabitacion = conexHabitacion.busquedaPorHotel(hotelesc);
+              agregarHabitacion();
+              contenido.add(listaHab, BorderLayout.CENTER);
+              listaHab.setVisible(true);
+              listaHab.panel.setVisible(true);
+              listaHab.pie.setVisible(true);
+              listaHab.busque.setVisible(true);
+              lista.setVisible(false);
+              contenido.validate();
+            } catch (ClassNotFoundException | SQLException ex) {
+              Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          } else {
+            JOptionPane.showMessageDialog(null, "Registre o inicie sesión", "", JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))));
           }
         }
       };
@@ -336,21 +330,21 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           }
           contenido.validate();
         }else{
-          JOptionPane.showMessageDialog(null, "Seleccione una o mas habitaciones", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
+          JOptionPane.showMessageDialog(null, "Seleccione una o mas habitaciones", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
         }
       }
     });
-    for (int i = 0; i < listahabitacion.size(); i++){
-      cajaHab = new CajaHabitacion(listahabitacion.get(i)){
+    for (Habitacion habitacion : listahabitacion) {
+      cajaHab = new CajaHabitacion(habitacion) {
         @Override
         public void mouseClicked(MouseEvent me) {
           super.mouseClicked(me);
-          if(super.isFocusable()){
+          if (super.isFocusable()) {
             super.setFocusable(false);
             super.setBackground(new Color(153, 77, 60));
             listaHab.setTitulo("Habitaciones: " + ++numeroHabitacion);
             habitacionreserva.add(super.getCaja());
-          }else{
+          } else {
             super.setFocusable(true);
             listaHab.setTitulo("Habitaciones: " + --numeroHabitacion);
             habitacionreserva.remove(super.getCaja());
@@ -411,7 +405,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     });
     jPCerrar.setLayout(new java.awt.BorderLayout());
 
-    jlCerrar.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
+    jlCerrar.setFont(new java.awt.Font("Roboto", Font.PLAIN, 15)); // NOI18N
     jlCerrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
     jlCerrar.setText("X");
     jlCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -529,13 +523,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           break;
         }
       }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+    } catch (Exception ex) {
       java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
     //</editor-fold>

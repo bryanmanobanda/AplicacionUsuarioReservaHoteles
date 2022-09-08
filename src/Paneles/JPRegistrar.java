@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -37,9 +38,9 @@ public class JPRegistrar extends javax.swing.JPanel {
   JLabelTitle jLT;
   JTextCalendar calendar;
   JComboBoxRound combo;
-  JButton jBRegistro = new JButton();;
+  JButton jBRegistro = new JButton();
   int tamText = 17;
-  GregorianCalendar c = new GregorianCalendar(1951, Calendar.JANUARY,01);
+  GregorianCalendar c = new GregorianCalendar(1951, Calendar.JANUARY, 1);
   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   Date max = new Date();
   public JPRegistrar() throws ParseException {
@@ -76,21 +77,21 @@ public class JPRegistrar extends javax.swing.JPanel {
       public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
         String pass = String.valueOf(jtPass.getPassword());
-        Date fecha = new Date();
+        java.sql.Date fecha;
         if(jtNombre.getText().equals("Ingrese su nombre") || jtNombre.getText().isEmpty() || jCBPaises.getSelectedIndex() == 0 ||
          String.valueOf(jtPass.getPassword()).isEmpty() || String.valueOf(jtPass.getPassword()).equals("P@ssw0rd") ||
          jtCorreo.getText().equals("Ingrese un correo") || jtCorreo.getText().isEmpty() || jTFecha.getText().isEmpty()){
-         JOptionPane.showMessageDialog(null, "Ingrese datos validos", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
+         JOptionPane.showMessageDialog(null, "Ingrese datos validos", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
         }else{
           fecha =  java.sql.Date.valueOf(jTFecha.getText());
-          cliente = new Cliente(jtNombre.getText(),jtCorreo.getText(), cifrado.md5(pass),jCBPaises.getSelectedItem().toString(), (java.sql.Date) fecha);
+          cliente = new Cliente(jtNombre.getText(),jtCorreo.getText(), CifrarContrasenia.md5(pass), Objects.requireNonNull(jCBPaises.getSelectedItem()).toString(), fecha);
           try {
-            if(registro.verificarUsuario(cliente.getCorreo()) == 0) {
+            if(registro.verificarCorreo(cliente.getCorreo()) == 0) {
               registro.registrarUsuario(cliente);
               registro.iniciarSesion(cliente);
-              JOptionPane.showMessageDialog(null, "Usuario registrado", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/exitoEs.png"))));
+              JOptionPane.showMessageDialog(null, "Usuario registrado", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/exitoEs.png")))));
             }else{
-              JOptionPane.showMessageDialog(null, "Correo ya registrado", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))));
+              JOptionPane.showMessageDialog(null, "Correo ya registrado", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))));
               cliente.setIdUsuario(0);
             }
           }catch (SQLException | ClassNotFoundException ex) {

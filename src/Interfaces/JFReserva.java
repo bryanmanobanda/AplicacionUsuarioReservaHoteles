@@ -16,10 +16,11 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 public class JFReserva extends javax.swing.JFrame{
@@ -74,29 +75,29 @@ public class JFReserva extends javax.swing.JFrame{
   }
   
   public void agregarReservas( ) throws ClassNotFoundException, SQLException{
-    listaReserva = conexReserva.busquedaReservasPorCliente(cliente);
-    for (int i = 0; i < listaReserva.size(); i++){
-      reservaSel = new CajaReserva(listaReserva.get(i)){
-        @Override
-        public void mouseClicked(MouseEvent me) {
-            respuesta = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la reserva?","",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE,new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))));
-            if(respuesta == 0 ){
-                super.mouseClicked(me);
-                try {
-                    reservaEliminar = super.getreservaSelec();
-                    conexHabitacionReserva.eliminarHabitacionReserva(reservaEliminar);
-                    conexReserva.eliminarReserva(reservaEliminar);
-                    listaReserva1.limpiar();
-                    agregarReservas();
-                } catch (SQLException | ClassNotFoundException ex) {
-                    Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                JOptionPane.showMessageDialog(null, "Reservada eliminada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/exitoEs.png"))));
-            }
-        }
-      };
-      listaReserva1.arreglo(reservaSel);
-    }
+    listaReserva = conexReserva.listarReservasPorCliente(cliente);
+      for (Reserva reserva : listaReserva) {
+          reservaSel = new CajaReserva(reserva) {
+              @Override
+              public void mouseClicked(MouseEvent me) {
+                  respuesta = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la reserva?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))));
+                  if (respuesta == 0) {
+                      super.mouseClicked(me);
+                      try {
+                          reservaEliminar = super.getreservaSelec();
+                          conexHabitacionReserva.eliminarHabitacionReserva(reservaEliminar);
+                          conexReserva.eliminarReserva(reservaEliminar);
+                          listaReserva1.limpiar();
+                          agregarReservas();
+                      } catch (SQLException | ClassNotFoundException ex) {
+                          Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
+                      }
+                      JOptionPane.showMessageDialog(null, "Reservada eliminada", "", JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/exitoEs.png")))));
+                  }
+              }
+          };
+          listaReserva1.arreglo(reservaSel);
+      }
     jPEntorno.validate();
   }
   
@@ -143,14 +144,14 @@ public class JFReserva extends javax.swing.JFrame{
         jPLateral.setPreferredSize(new java.awt.Dimension(199, 200));
         jPLateral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jBLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Logo/logoAdmin.png"))); // NOI18N
+        jBLogo.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Logo/logoAdmin.png")))); // NOI18N
         jBLogo.setBorderPainted(false);
         jBLogo.setContentAreaFilled(false);
         jBLogo.setFocusPainted(false);
         jPLateral.add(jBLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Dialogo/Usuarioper.png"))); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Roboto", Font.PLAIN, 18)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/Usuarioper.png")))); // NOI18N
         jPLateral.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 110, 107, 83));
 
         nombre.setText("jLabel2");
@@ -190,7 +191,7 @@ public class JFReserva extends javax.swing.JFrame{
         });
         jPBarra.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jlCerrar.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
+        jlCerrar.setFont(new java.awt.Font("Roboto", Font.PLAIN, 15)); // NOI18N
         jlCerrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlCerrar.setText("X");
         jlCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -216,7 +217,7 @@ public class JFReserva extends javax.swing.JFrame{
         jPEncabezado.setBackground(new java.awt.Color(147, 171, 169));
         jPEncabezado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLEncabezado.setFont(new java.awt.Font("Roboto Medium", 0, 30)); // NOI18N
+        jLEncabezado.setFont(new java.awt.Font("Roboto Medium", Font.PLAIN, 30)); // NOI18N
         jLEncabezado.setForeground(new java.awt.Color(11, 31, 76));
         jLEncabezado.setText("Mis Reservas");
         jPEncabezado.add(jLEncabezado, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
@@ -252,35 +253,35 @@ public class JFReserva extends javax.swing.JFrame{
   }//GEN-LAST:event_jPCerrarMouseExited
 
     private void jBCambiarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCambiarPasswordActionPerformed
-        int resp = JOptionPane.showConfirmDialog(null, "¿Desea cambiar la contraseña?","",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE,new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))));
+        int resp = JOptionPane.showConfirmDialog(null, "¿Desea cambiar la contraseña?","",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE,new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))));
         Object anteriorO;
         String anterior;
         if(resp == 0 ){
             while(true){
-                anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña anterior", "", JOptionPane.QUESTION_MESSAGE,new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))),null,DISPOSE_ON_CLOSE);
+                anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña anterior", "", JOptionPane.QUESTION_MESSAGE,new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))),null,DISPOSE_ON_CLOSE);
                 if(anteriorO != null){
                     anterior = (String) anteriorO;
-                    if(cliente.getContrasenia().equals(cifrado.md5(anterior))){
-                        anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña nueva", "", JOptionPane.ERROR_MESSAGE,new ImageIcon((getClass().getResource("/Assets/Dialogo/advertencia.png"))),null,DISPOSE_ON_CLOSE);
+                    if(cliente.getContrasenia().equals(CifrarContrasenia.md5(anterior))){
+                        anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña nueva", "", JOptionPane.ERROR_MESSAGE,new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))),null,DISPOSE_ON_CLOSE);
                         if(anteriorO != null){
                             String nueva = (String)  anteriorO;
-                            cliente.setContrasenia(cifrado.md5(nueva));
+                            cliente.setContrasenia(CifrarContrasenia.md5(nueva));
                             try {
                                 conexCliente.modificarContrasenia(cliente);
                             } catch (SQLException | ClassNotFoundException ex) {
                                 Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            JOptionPane.showMessageDialog(null, "Contraseña cambiada exitosamente", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/listo.png"))));
+                            JOptionPane.showMessageDialog(null, "Contraseña cambiada exitosamente", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/listo.png")))));
                             break;
                         }else{
-                            JOptionPane.showMessageDialog(null, "Contraseña no cambiada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
+                            JOptionPane.showMessageDialog(null, "Contraseña no cambiada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
                             break;
                         }
                     }else{
-                        JOptionPane.showMessageDialog(null, "Contraseña ingresada no valida", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
+                        JOptionPane.showMessageDialog(null, "Contraseña ingresada no valida", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
                     }
                 }else{
-                    JOptionPane.showMessageDialog(null, "Contraseña no cambiada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
+                    JOptionPane.showMessageDialog(null, "Contraseña no cambiada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
                     break;
                 }
             }
@@ -303,16 +304,10 @@ public class JFReserva extends javax.swing.JFrame{
           break;
         }
       }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(JFReserva.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(JFReserva.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(JFReserva.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+    } catch (Exception ex) {
       java.util.logging.Logger.getLogger(JFReserva.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
-    //</editor-fold>
+      //</editor-fold>
     //</editor-fold>
     //</editor-fold>
     //</editor-fold>

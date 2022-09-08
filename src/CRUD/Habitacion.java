@@ -35,10 +35,6 @@ public class Habitacion {
         return idHotel;
     }
 
-    public void setIdHotel(int idHotel) {
-        this.idHotel = idHotel;
-    }
-
     public String getContinente() {
         return continente;
     }
@@ -46,10 +42,6 @@ public class Habitacion {
     public void setContinente(String continente) {
         this.continente = continente;
     }
-
-
-
-
 
     public TipoHabitacion getTipoHabitacion() {
         return tipoHabitacion;
