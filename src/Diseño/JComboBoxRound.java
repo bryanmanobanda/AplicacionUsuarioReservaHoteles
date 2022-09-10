@@ -9,7 +9,7 @@ import javax.swing.JComboBox;
 
 public class JComboBoxRound extends JComboBox {
 private final Dimension d = new Dimension(150, 25);
-  private final BorderLineRound border = new BorderLineRound(new Color(219, 157, 121), true);
+  private final BorderLineRound border = new BorderLineRound();
   public JTextFieldRound combo;
   
   public JComboBoxRound(JComboBox j) {
@@ -33,7 +33,7 @@ private final Dimension d = new Dimension(150, 25);
   }
 
   private void txtFocusGained(FocusEvent evt){
-    setBorder(new BorderLineRound(new Color(218, 157, 121), true));
+    setBorder(new BorderLineRound());
   }
   
   private void txtFocusLost(FocusEvent evt){

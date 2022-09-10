@@ -2,13 +2,13 @@ package Conexion;
 
 
 import CRUD.TipoHabitacion;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class SQLTipoHab extends SQL{
-    ResultSet rs1;
+public class SQLTipoHab extends SQL {
 
-    public void buscarTipo(TipoHabitacion tipoHabitacion) throws SQLException{
+    public void buscarTipo(TipoHabitacion tipoHabitacion) throws SQLException {
         connection = getConnection();
 
         ps = connection.prepareStatement("SELECT * FROM TIPO_HAB WHERE NOMBRE_TIPO = ?");
@@ -22,25 +22,14 @@ public class SQLTipoHab extends SQL{
         }
     }
 
-    //TODO: Refactor con clase Diseño.ListaHabitaciones
-    public String[] busquedaTipos() throws SQLException {
-        int i = 0;
-        String[] tipos;
+    public ArrayList<String> listarNombreTipos() throws SQLException {
+        ArrayList<String> tipos = new ArrayList<>();
         connection = getConnection();
-        ps = connection.prepareStatement("SELECT DISTINCT(NOMBRE_TIPO) FROM TIPO_HAB");
+        ps = connection.prepareStatement("SELECT NOMBRE_TIPO FROM TIPO_HAB");
         rs = ps.executeQuery();
 
-        ps = connection.prepareStatement("SELECT COUNT(DISTINCT(NOMBRE_TIPO)) AS N FROM TIPO_HAB");
-        rs1 = ps.executeQuery();
-        connection.close();
-        rs1.next();
-        tipos = new String[rs1.getInt("N") + 1];
-
-        tipos[0] = "Seleccione un tipo";
-        i++;
         while (rs.next()) {
-            tipos[i] = rs.getString("NOMBRE_TIPO");
-            i++;
+            tipos.add(rs.getString("NOMBRE_TIPO"));
         }
         return tipos;
     }

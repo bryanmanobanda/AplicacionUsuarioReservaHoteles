@@ -9,6 +9,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -21,8 +22,8 @@ public class JPasswordFieldRound extends JPasswordField {
   //JTextFieldRound text = new JTextFieldRound(notifyAction);
   private final Dimension d = new Dimension(278, 25);
   private final JCheckBox check = new JCheckBox();
-  private final JLabel icon = new JLabel(new ImageIcon((getClass().getResource("/Assets/Dialogo/icoBus.png"))));
-  private final BorderLineRound border = new BorderLineRound(new Color(219, 157, 121),true);
+  private final JLabel icon = new JLabel(new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/icoBus.png")))));
+  private final BorderLineRound border = new BorderLineRound();
   public JPasswordFieldRound(String placeHolder) {
     this.setOpaque(true);
     this.setBorder(border);
@@ -45,7 +46,7 @@ public class JPasswordFieldRound extends JPasswordField {
       public void focusLost(FocusEvent e) {
         txtFocusLost(e);
         setEchoChar('*');
-        check.setIcon(new ImageIcon(getClass().getResource("/Assets/Dialogo/disable.png")));
+        check.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/disable.png"))));
         check.setSelected(false);
       }
     });
@@ -63,15 +64,15 @@ public class JPasswordFieldRound extends JPasswordField {
     this.setLayout(new AbsoluteLayout());
     this.add(check, new AbsoluteConstraints(250, 0,-1,-1));
     this.add(icon, new AbsoluteConstraints(5, 3,-1, -1));
-    check.setIcon(new ImageIcon(getClass().getResource("/Assets/Dialogo/disable.png")));
+    check.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/disable.png"))));
     check.setFocusable(false);
     check.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseEntered(MouseEvent evt) {
         if (check.isSelected()){
-          check.setIcon(new ImageIcon(getClass().getResource("/Assets/Dialogo/enable.png")));
+          check.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/enable.png"))));
         }else{
-          check.setIcon(new ImageIcon(getClass().getResource("/Assets/Dialogo/disable.png")));
+          check.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/disable.png"))));
         }
         check.setCursor(new Cursor(Cursor.HAND_CURSOR));
       }
@@ -79,9 +80,9 @@ public class JPasswordFieldRound extends JPasswordField {
       @Override
       public void mouseExited(MouseEvent me) {
         if (check.isSelected()){
-          check.setIcon(new ImageIcon(getClass().getResource("/Assets/Dialogo/enable.png")));
+          check.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/enable.png"))));
         }else{
-         check.setIcon(new ImageIcon(getClass().getResource("/Assets/Dialogo/disable.png")));
+         check.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/disable.png"))));
         }
         check.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
       }
@@ -89,9 +90,9 @@ public class JPasswordFieldRound extends JPasswordField {
     
     check.addActionListener( ((ActionEvent e) -> {
       if (check.isSelected()){
-          check.setIcon(new ImageIcon(getClass().getResource("/Assets/Dialogo/enable.png")));
+          check.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/enable.png"))));
         }else{
-          check.setIcon(new ImageIcon(getClass().getResource("/Assets/Dialogo/disable.png")));
+          check.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/disable.png"))));
         }
       
       if (check.isSelected()){
@@ -104,7 +105,7 @@ public class JPasswordFieldRound extends JPasswordField {
   }
   
   private void txtFocusGained(FocusEvent evt){
-    setBorder(new BorderLineRound(new Color(219, 157, 121),true));
+    setBorder(new BorderLineRound());
   }
   
   private void txtFocusLost(FocusEvent  evt){

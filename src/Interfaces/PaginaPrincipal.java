@@ -104,7 +104,6 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     encabezado.add(jbRegistrar, new AbsoluteConstraints(800, 20, -1, -1));
     encabezado.add(JbIniciar, new AbsoluteConstraints(900, 20, -1, -1));
     contenido.add(lista, BorderLayout.CENTER);
-    paises = conexHotel.busquedaPaises();
     cerrarSesion.setVisible(false);
     misReservas.setVisible(false);
     iniciar.addMouseListener(new MouseAdapter() {
@@ -146,7 +145,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           JOptionPane.showMessageDialog(null, "Escoja fechas validas", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
         }else{
           for (CajaHabitacion cajaHabitacion : habitacionreserva) {
-            habitacionSelect.add(cajaHabitacion.getHabitacionselec());
+            habitacionSelect.add(cajaHabitacion.getHabitacionSeleccionada());
           }
         reserva = new Reserva(hotelesc.getContinente(),cliente.getIdUsuario(),Date.valueOf(jpreserva.jDateInicio.getText()), Date.valueOf(jpreserva.jDateFinal.getText()), habitacionSelect,jpreserva.precioHab);
         reserva.cambiarEstado();
@@ -258,10 +257,10 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         jpreserva.setVisible(false);
         contenido.add(listaHab, BorderLayout.CENTER);
         listaHab.setVisible(true);
-        listaHab.panel.setVisible(true);
-        listaHab.getPie().add(atras, new AbsoluteConstraints(800, 14, -1,-1));
-        listaHab.pie.setVisible(true);
-        listaHab.busque.setVisible(true);
+        listaHab.jPanel.setVisible(true);
+        listaHab.getjPPie().add(atras, new AbsoluteConstraints(800, 14, -1,-1));
+        listaHab.jPPie.setVisible(true);
+        listaHab.jPbusqueda.setVisible(true);
         contenido.validate();
       }
     }
@@ -281,14 +280,14 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           if (cliente != null && cliente.getIdUsuario() != 0) {
             super.mouseClicked(me);
             try {
-              hotelesc = super.getHotelSelec();
+              hotelesc = super.getHotelSeleccionado();
               listahabitacion = conexHabitacion.busquedaPorHotel(hotelesc);
               agregarHabitacion();
               contenido.add(listaHab, BorderLayout.CENTER);
               listaHab.setVisible(true);
-              listaHab.panel.setVisible(true);
-              listaHab.pie.setVisible(true);
-              listaHab.busque.setVisible(true);
+              listaHab.jPanel.setVisible(true);
+              listaHab.jPPie.setVisible(true);
+              listaHab.jPbusqueda.setVisible(true);
               lista.setVisible(false);
               contenido.validate();
             } catch (ClassNotFoundException | SQLException ex) {
@@ -299,9 +298,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           }
         }
       };
-      lista.arreglo(hotelsel);
+      lista.agregarCajaHotel(hotelsel);
     }
-    lista.pais(paises);
     lista.setVisible(true);
     contenido.validate();
   }
@@ -318,9 +316,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           jpreserva.setVisible(true);
           jpreserva.getHabitacion().setVisible(true);
           jpreserva.getInformacion().setVisible(true);
-          listaHab.panel.setVisible(false);
-          listaHab.pie.setVisible(false);
-          listaHab.busque.setVisible(false);
+          listaHab.jPanel.setVisible(false);
+          listaHab.jPPie.setVisible(false);
+          listaHab.jPbusqueda.setVisible(false);
           listaHab.setVisible(false);
           lista.setVisible(false);
           try {
@@ -342,20 +340,20 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           if (super.isFocusable()) {
             super.setFocusable(false);
             super.setBackground(new Color(153, 77, 60));
-            listaHab.setTitulo("Habitaciones: " + ++numeroHabitacion);
+            listaHab.setjLTitulo("Habitaciones: " + ++numeroHabitacion);
             habitacionreserva.add(super.getCaja());
           } else {
             super.setFocusable(true);
-            listaHab.setTitulo("Habitaciones: " + --numeroHabitacion);
+            listaHab.setjLTitulo("Habitaciones: " + --numeroHabitacion);
             habitacionreserva.remove(super.getCaja());
           }
         }
       };
-      listaHab.arreglo(cajaHab);
+      listaHab.agregarCajaHabitacion(cajaHab);
     }
-    listaHab.setTitulo("Habitaciones: " + numeroHabitacion);
-    listaHab.getPie().add(cont, new AbsoluteConstraints(900, 14, -1,-1));
-    listaHab.getPie().add(atras, new AbsoluteConstraints(800, 14, -1,-1));
+    listaHab.setjLTitulo("Habitaciones: " + numeroHabitacion);
+    listaHab.getjPPie().add(cont, new AbsoluteConstraints(900, 14, -1,-1));
+    listaHab.getjPPie().add(atras, new AbsoluteConstraints(800, 14, -1,-1));
   }
   
   private JFrame getFrame(){
@@ -552,16 +550,16 @@ public class PaginaPrincipal extends javax.swing.JFrame {
   public void limpiar(){
     habitacionreserva.clear();
     listahotel.clear();
-    lista.limpiar();
+    lista.limpiarContenido();
     listareserva.clear();
     habitacionSelect.clear();
     numeroHabitacion = 0;
     jpreserva.limpieza();
     numeroHabitacion = 0;
-    listaHab.limpiar();
-    listaHab.panel.setVisible(false);
-    listaHab.pie.setVisible(false);
-    listaHab.busque.setVisible(false);
+    listaHab.limpiarContenido();
+    listaHab.jPanel.setVisible(false);
+    listaHab.jPPie.setVisible(false);
+    listaHab.jPbusqueda.setVisible(false);
     listaHab.setVisible(false);
     jpreserva.setVisible(false);
     jpreserva.Habitacion.setVisible(false);

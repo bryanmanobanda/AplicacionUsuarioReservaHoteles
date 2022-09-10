@@ -1,112 +1,93 @@
 package Diseño;
 
 import Conexion.SQLTipoHab;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
-public class ListaHabitaciones extends JPanel implements ItemListener{
-  private final Color cuerpo = new Color(147,171,169);
-  private final Color pieCol = new Color(195,116,94);
-  private final Font Ftitulo = new Font("Open Sans Semibold", Font.BOLD, 18);
-  JComboBox combo = new JComboBox();
-  JComboBoxRound busqueda = new JComboBoxRound(combo);
-  JScrollPane jsPanel = new JScrollPane();
-  public JPanel panel = new JPanel(new GridLayout(0, 3, 30, 30));
-  public JPanel pie = new JPanel(new AbsoluteLayout());
-  public JPanel busque = new JPanel(new AbsoluteLayout());
-  Dimension tam = new Dimension(1000, 50);
-  SQLTipoHab conexTipo = new SQLTipoHab();
-  JLabel titulo= new JLabel();
-  ArrayList<CajaHabitacion> lista = new ArrayList<>();
-  
-  public ListaHabitaciones() throws ClassNotFoundException, SQLException{
-    combo.setPreferredSize(new Dimension(300, 25));
-    jsPanel.setBackground(cuerpo);
-    jsPanel.setBorder(null);
-    this.setBackground(cuerpo);
-    combo.setModel(new DefaultComboBoxModel<>(conexTipo.busquedaTipos()));
-    busque.setBackground(cuerpo);
-    panel.setBackground(cuerpo);
-    pie.setBackground(pieCol);
-    titulo.setFont(Ftitulo);
-    titulo.setForeground(Color.WHITE);
-    this.setLayout(new BorderLayout());
-    busque.setPreferredSize(tam);
-    pie.setPreferredSize(tam);
-    pie.add(titulo, new AbsoluteConstraints(600, 14, -1,-1));
-    busque.add(combo, new AbsoluteConstraints(350, 14, -1,-1));
-    this.add(busque, BorderLayout.NORTH);
-    this.add(jsPanel, BorderLayout.CENTER);
-    this.add(pie,BorderLayout.SOUTH);
-    jsPanel.getViewport().add(panel);
-    combo.addItemListener(this);
-  }
-  
-  public void arreglo(CajaHabitacion caja){
-    lista.add(caja);
-    panel.add(caja);
-  }  
+public class ListaHabitaciones extends Lista {
+    private final Color colorPie = new Color(195, 116, 94);
+    private final Font fuenteTitulo = new Font("Open Sans Semibold", Font.BOLD, 18);
+    private JComboBox<Object> jComboBox = new JComboBox<>();
+    private JComboBoxRound jCbusqueda = new JComboBoxRound(jComboBox);
+    public JPanel jPPie = new JPanel(new AbsoluteLayout());
+    public JPanel jPbusqueda = new JPanel(new AbsoluteLayout());
+    private Dimension dimension = new Dimension(1000, 50);
+    private SQLTipoHab conexionTipoHabitacion = new SQLTipoHab();
+    private JLabel jLTitulo = new JLabel();
+    private ArrayList<CajaHabitacion> listaCajaHabitacion = new ArrayList<>();
+    private ArrayList<String> listaTipoHabitacion = new ArrayList<>();
 
-  public JLabel getTitulo() {
-    return titulo;
-  }
+    public ListaHabitaciones() throws SQLException {
+        super();
+        jComboBox.setPreferredSize(new Dimension(300, 25));
+        listaTipoHabitacion.add("Seleccione un tipo");
+        listaTipoHabitacion.addAll(conexionTipoHabitacion.listarNombreTipos());
+        jComboBox.setModel(new DefaultComboBoxModel<>(listaTipoHabitacion.toArray()));
+        jPbusqueda.setBackground(ColorCuerpo);
+        jPPie.setBackground(colorPie);
+        jLTitulo.setFont(fuenteTitulo);
+        jLTitulo.setForeground(Color.WHITE);
+        jPbusqueda.setPreferredSize(dimension);
+        jPPie.setPreferredSize(dimension);
+        jPPie.add(jLTitulo, new AbsoluteConstraints(600, 14, -1, -1));
+        jPbusqueda.add(jComboBox, new AbsoluteConstraints(350, 14, -1, -1));
 
-  public void setTitulo(String titulo) {
-    this.titulo.setText(titulo);
-  }
-  
-  public JPanel getPie() {
-    return pie;
-  }
+        jComboBox.addItemListener(this);
+        this.add(jPbusqueda, BorderLayout.NORTH);
+        this.add(jPPie, BorderLayout.SOUTH);
+    }
 
-  public void setPie(JPanel pie) {
-    this.pie = pie;
-  }
-  
-  public void limpiar(){
-    panel.removeAll();
-    panel.updateUI();
-    pie.updateUI();
-    combo.removeAll();
-    lista.clear();
-    busque.updateUI();
-  }
+    public void agregarCajaHabitacion(CajaHabitacion caja) {
+        listaCajaHabitacion.add(caja);
+        jPanel.add(caja);
+    }
 
-  @Override
-  public void itemStateChanged(ItemEvent ie) {
-    combo.addItemListener(new ItemListener() {
-      @Override
-      public void itemStateChanged(ItemEvent ie) {
-        if(combo.getSelectedIndex() == 0){
-            panel.removeAll();
-            for(int i = 0; i < lista.size(); i++){
-                panel.add(lista.get(i));
+    public void setjLTitulo(String jLTitulo) {
+        this.jLTitulo.setText(jLTitulo);
+    }
+
+    public JPanel getjPPie() {
+        return jPPie;
+    }
+
+    public void limpiarContenido() {
+        super.limpiarContenido();
+        jPPie.updateUI();
+        jComboBox.removeAll();
+        listaCajaHabitacion.clear();
+        jPbusqueda.updateUI();
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent ie) {
+        jComboBox.addItemListener(ie1 -> {
+            jPanel.removeAll();
+            if (jComboBox.getSelectedIndex() == 0) {
+                for (CajaHabitacion cajaHabitacion : listaCajaHabitacion) {
+                    jPanel.add(cajaHabitacion);
+                }
+            } else {
+                String tipoSeleccionado = (String) jComboBox.getSelectedItem();
+                for (CajaHabitacion cajaHabitacion : listaCajaHabitacion) {
+                    if (cajaHabitacion.getHabitacionSeleccionada().getTipoHabitacion().getNombreTipo().equals(tipoSeleccionado)) {
+                        jPanel.add(cajaHabitacion);
+                    }
+                }
             }
-          panel.updateUI();
-          }else{
-        String seleccionado=(String)combo.getSelectedItem();
-        panel.removeAll();
-        for(int i = 0; i < lista.size(); i++){
-          if(lista.get(i).getHabitacionselec().getTipoHabitacion().getNombreTipo().equals(seleccionado)){
-            panel.add(lista.get(i));
-          }
-        }
-          panel.updateUI();
-        }}
-      });
-  }
+            jPanel.updateUI();
+        });
+    }
 }

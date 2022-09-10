@@ -1,12 +1,11 @@
 package Conexion;
 
 import CRUD.Hotel;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class SQLHotel extends SQL{
-    ResultSet rs1;
+public class SQLHotel extends SQL {
 
     public ArrayList<Hotel> listarHoteles() throws SQLException {
         ArrayList<Hotel> listahotel = new ArrayList<>();
@@ -29,25 +28,16 @@ public class SQLHotel extends SQL{
         }
         return listahotel;
     }
-    //TODO: REFACTOR CON PAGINAPRINCIPAL
-    public String[] busquedaPaises() throws SQLException {
+
+    public ArrayList<String> listarPaises() throws SQLException {
         int i = 0;
-        String[] paises;
+        ArrayList<String> paises = new ArrayList<>();
         connection = getConnection();
         ps = connection.prepareStatement("SELECT DISTINCT(PAIS) FROM HOTEL");
         rs = ps.executeQuery();
 
-        ps = connection.prepareStatement("SELECT COUNT(DISTINCT(PAIS)) AS N FROM HOTEL");
-        rs1 = ps.executeQuery();
-        connection.close();
-        rs1.next();
-        paises = new String[rs1.getInt("N") + 1];
-
-        paises[0] = "Seleccione un pais";
-        i++;
         while (rs.next()) {
-            paises[i] = rs.getString("PAIS");
-            i++;
+            paises.add(rs.getString("PAIS"));
         }
         return paises;
     }
