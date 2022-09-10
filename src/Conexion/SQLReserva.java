@@ -34,7 +34,9 @@ public class SQLReserva extends SQL{
         ArrayList<Reserva> reservas = new ArrayList<>();
         SQLHabitacion sqlHabitacion = new SQLHabitacion();
         connection = getConnection();
-        ps = connection.prepareStatement("select  * from RESERVA  where ID_USUARIO = ? order by ID_RESERVA desc  LIMIT 1");
+        //ps = connection.prepareStatement("select  * from RESERVA  where ID_USUARIO = ? order by ID_RESERVA desc  LIMIT 1");
+        //PARA LISTAR TODAS LAS RESERVAS DEL CLIENTE desde la mas actual   
+        ps = connection.prepareStatement("select  * from RESERVA  where ID_USUARIO = ? order by ID_RESERVA desc");
         ps.setInt(1, cliente.getIdUsuario());
         rs = ps.executeQuery();
         connection.close();

@@ -26,19 +26,39 @@ public class JFAcceso extends javax.swing.JFrame implements  ActionListener{
   }
   
   private void deshabilitarBoton(){
+    boolean inicioVisible = false, registroVisible=true;
+    /*
     if(inicio.isVisible()){
       jBInicio.setEnabled(false);
       jBRegistro.setEnabled(true);
     }else if(registro.isVisible()){
-      jBRegistro.setEnabled(false);
       jBInicio.setEnabled(true);
+      jBRegistro.setEnabled(false);
+    }*/
+    if(registro.isVisible()){
+      inicioVisible = true;
+      registroVisible = false;
     }
+    jBInicio.setEnabled(inicioVisible);
+    jBRegistro.setEnabled(registroVisible);
+  }
+  
+  private void prepararEntornoInicio(){
+      jPEntorno.add(inicio);
+      inicio.setVisible(true);
+      registro.setVisible(false);
+  }
+  
+  private void prepararEntornoRegistro(){
+     jPEntorno.add(registro);
+     inicio.setVisible(false);
+     registro.setVisible(true); 
   }
   
   public void habilitarPanel(JPIniciarSesion inicio1, JPRegistrar registro1, String nombre){
     inicio = inicio1;
     registro = registro1;
-    if("Inicio".equals(nombre)){
+    /*if("Inicio".equals(nombre)){
       jPEntorno.add(inicio);
       inicio.setVisible(true);
       registro.setVisible(false);
@@ -48,7 +68,14 @@ public class JFAcceso extends javax.swing.JFrame implements  ActionListener{
       inicio.setVisible(false);
       registro.setVisible(true);
       deshabilitarBoton();
+    }*/
+    
+    if("Inicio".equals(nombre)){
+      prepararEntornoInicio();
+    }else{
+      prepararEntornoRegistro();
     }
+    deshabilitarBoton();
     jBRegistro.addActionListener(this);
     jBInicio.addActionListener(this);
   }
@@ -229,20 +256,28 @@ public class JFAcceso extends javax.swing.JFrame implements  ActionListener{
   @Override
   public void actionPerformed(ActionEvent ae) {
     Object evt = ae.getSource();
+    /*
     if(evt.equals(jBInicio)){
       registro.setVisible(false);
       inicio.setVisible(true);
       jPEntorno.add(inicio);
       jPEntorno.validate();
       deshabilitarBoton();
-    }
-    
+    }  
     if(evt.equals(jBRegistro)){
       registro.setVisible(true);
       inicio.setVisible(false);
       jPEntorno.add(registro);
       jPEntorno.validate();
       deshabilitarBoton();
+    }*/
+    if(evt.equals(jBInicio)){
+      prepararEntornoInicio();
+    } 
+    if(evt.equals(jBRegistro)){
+      prepararEntornoRegistro();
     }
+    jPEntorno.validate();
+    deshabilitarBoton();
   }
 }
