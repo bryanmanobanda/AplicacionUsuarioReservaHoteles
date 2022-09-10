@@ -17,14 +17,14 @@ public class TipoHabitacion {
     //TODO: REFACTOR
     private void setIcono() {
         switch (nombreTipo) {
-            case "TWIN" -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Twin.png"))));
-            case "DOBLE" -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Doble.png"))));
-            case "INDIVIDUAL" -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Individual.png"))));
-            case "TRIPLE" -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Triple.png"))));
-            case "CUADRUPLE" -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Cuadruple.png"))));
-            case "MATRIMONIAL" -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Matrimonial.png"))));
-            case "FAMILIAR" -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Familiar.png"))));
-            case "SUITE PRINCIPAL" -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Suite.png"))));
+            case "TWIN" : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Twin.png")))); break;
+            case "DOBLE" : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Doble.png"))));break;
+            case "INDIVIDUAL" : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Individual.png"))));break;
+            case "TRIPLE" : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Triple.png"))));break;
+            case "CUADRUPLE" : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Cuadruple.png"))));break;
+            case "MATRIMONIAL" : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Matrimonial.png"))));break;
+            case "FAMILIAR" : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Familiar.png"))));break;
+            case "SUITE PRINCIPAL" : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Habitacion/Suite.png"))));break;
         }
     }
 

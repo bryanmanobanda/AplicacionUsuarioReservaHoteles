@@ -47,11 +47,11 @@ public class Hotel {
     //TODO: Refactor
     private void setIcono() {
         switch (prestigio) {
-            case 1 -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/1Hotel.png"))));
-            case 2 -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/2Hotel.png"))));
-            case 3 -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/3Hotel.png"))));
-            case 4 -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/4Hotel.png"))));
-            case 5 -> icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/5Hotel.png"))));
+            case 1 : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/1Hotel.png"))));
+            case 2 : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/2Hotel.png"))));
+            case 3 : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/3Hotel.png"))));
+            case 4 : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/4Hotel.png"))));
+            case 5 : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/5Hotel.png"))));
         }
     }
 
