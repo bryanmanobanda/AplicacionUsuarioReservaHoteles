@@ -1,81 +1,67 @@
 package Diseño;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+
+import Conexion.SQLHotel;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
-public class ListaHoteles extends JPanel implements ItemListener{
-  private final Color cuerpo = new Color(147,171,169);
-  JComboBox combo = new JComboBox();
-  JComboBoxRound busqueda = new JComboBoxRound(combo);
-  JScrollPane jsPanel = new JScrollPane();
-  public JPanel panel = new JPanel(new GridLayout(0, 3, 30, 30));
-  public JPanel busque = new JPanel(new AbsoluteLayout());
-  ArrayList<CajaHotel> lista = new ArrayList<>();
-  String[] paises;
-  public ListaHoteles() throws ClassNotFoundException, SQLException{
-    combo.setPreferredSize(new Dimension(300, 25));
-    jsPanel.setBackground(cuerpo);
-    jsPanel.setBorder(null);
-    this.setBackground(cuerpo);
-    busque.setBackground(cuerpo);
-    panel.setBackground(cuerpo);
-    this.setLayout(new BorderLayout());
-    busque.setPreferredSize(new Dimension(1000, 50));
-    busque.add(combo, new AbsoluteConstraints(350, 14, -1,-1));
-    this.add(busque, BorderLayout.NORTH);
-    this.add(jsPanel, BorderLayout.CENTER);
-    jsPanel.getViewport().add(panel);
-    combo.addItemListener(this);
-  }
-  
-  public void arreglo(CajaHotel caja){
-      lista.add(caja);
-      panel.add(caja);
-  }
-  
-  public void pais(String[] paises ){
-    this.paises = paises;
-    combo.setModel(new DefaultComboBoxModel<>(paises));
-  }
-  public void limpiar(){
-    panel.removeAll();
-    combo.removeAll();
-    lista.clear();
-    panel.updateUI();
-  }
-  @Override
-  public void itemStateChanged(ItemEvent ie) {
-    combo.addItemListener(new ItemListener() {
-        @Override
-        public void itemStateChanged(ItemEvent ie) {
-          if(combo.getSelectedIndex() == 0){
-            panel.removeAll();
-            for(int i = 0; i < lista.size(); i++){
-                panel.add(lista.get(i));
+public class ListaHoteles extends Lista {
+    private JComboBox<Object> jComboBox = new JComboBox<>();
+    private JComboBoxRound jCBusqueda = new JComboBoxRound(jComboBox);
+    public JPanel JPBusqueda = new JPanel(new AbsoluteLayout());
+    private ArrayList<CajaHotel> listaCajaHotel = new ArrayList<>();
+    public ArrayList<String> listaPaises = new ArrayList<>();
+    private SQLHotel conexionHotel = new SQLHotel();
+
+    public ListaHoteles() throws SQLException {
+        super();
+        listaPaises.add("Seleccione un país");
+        listaPaises.addAll(conexionHotel.listarPaises());
+        jComboBox.setModel(new DefaultComboBoxModel<>(listaPaises.toArray()));
+        jComboBox.setPreferredSize(new Dimension(300, 25));
+        JPBusqueda.setBackground(ColorCuerpo);
+        JPBusqueda.setPreferredSize(new Dimension(1000, 50));
+        JPBusqueda.add(jComboBox, new AbsoluteConstraints(350, 14, -1, -1));
+        jComboBox.addItemListener(this);
+        this.add(JPBusqueda, BorderLayout.NORTH);
+    }
+
+    public void agregarCajaHotel(CajaHotel caja) {
+        listaCajaHotel.add(caja);
+        jPanel.add(caja);
+    }
+
+    public void limpiarContenido() {
+        super.limpiarContenido();
+        jComboBox.removeAll();
+        listaCajaHotel.clear();
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent ie) {
+        jComboBox.addItemListener(ie1 -> {
+            jPanel.removeAll();
+            if (jComboBox.getSelectedIndex() == 0) {
+                for (CajaHotel cajaHotel : listaCajaHotel) {
+                    jPanel.add(cajaHotel);
+                }
+            } else {
+                String paisSeleccionado = (String) jComboBox.getSelectedItem();
+                for (CajaHotel cajaHotel : listaCajaHotel) {
+                    if (cajaHotel.getHotelSeleccionado().getPais().equals(paisSeleccionado)) {
+                        jPanel.add(cajaHotel);
+                    }
+                }
             }
-          panel.updateUI();
-          }else{
-          String seleccionado=(String)combo.getSelectedItem();
-          panel.removeAll();
-        for(int i = 0; i < lista.size(); i++){
-          if(lista.get(i).getHotelSelec().getPais().equals(seleccionado)){
-            panel.add(lista.get(i));
-          }
-        }
-          panel.updateUI();
-        }}
-      });
-  }
+            jPanel.updateUI();
+        });
+    }
 }

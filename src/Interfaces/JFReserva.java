@@ -124,11 +124,20 @@ public class JFReserva extends javax.swing.JFrame{
                       super.mouseClicked(me);
                       reservaEliminar = super.getreservaSelec();
                       eliminarReservaSelecionada();
+                      try {
+                          reservaEliminar = super.getreservaSelec();
+                          conexHabitacionReserva.eliminarHabitacionReserva(reservaEliminar);
+                          conexReserva.eliminarReserva(reservaEliminar);
+                          listaReserva1.limpiarContenido();
+                          agregarReservas();
+                      } catch (SQLException | ClassNotFoundException ex) {
+                          Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
+                      }
                       JOptionPane.showMessageDialog(null, "Reservada eliminada", "", JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/exitoEs.png")))));
                   }
               }
           };
-          listaReserva1.arreglo(reservaSel);
+          listaReserva1.agregarCajaReserva(reservaSel);
       }
     jPEntorno.validate();
   }
@@ -139,7 +148,7 @@ public class JFReserva extends javax.swing.JFrame{
                           //reservaEliminar = super.getreservaSelec();
                           conexHabitacionReserva.eliminarHabitacionReserva(reservaEliminar);
                           conexReserva.eliminarReserva(reservaEliminar);
-                          listaReserva1.limpiar();
+                          //listaReserva1.limpiar();
                           agregarReservas();
                       } catch (SQLException | ClassNotFoundException ex) {
                           Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);

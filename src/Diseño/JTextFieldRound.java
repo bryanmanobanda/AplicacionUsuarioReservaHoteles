@@ -7,6 +7,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -16,8 +17,8 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 public class JTextFieldRound extends JTextField implements MouseListener{
   private final Dimension d = new Dimension(278, 25);
-  private final JLabel icon = new JLabel(new ImageIcon((getClass().getResource("/Assets/Dialogo/icoBus.png"))));
-  private final BorderLineRound border = new BorderLineRound(new Color(219, 157, 121), true);
+  private final JLabel icon = new JLabel(new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/icoBus.png")))));
+  private final BorderLineRound border = new BorderLineRound();
   String place;
   public JTextFieldRound(String placeHolder) {
     place = placeHolder;
@@ -48,7 +49,7 @@ public class JTextFieldRound extends JTextField implements MouseListener{
   }
   
   private void txtFocusGained(FocusEvent evt){
-    setBorder(new BorderLineRound(new Color(219, 157, 121), true));
+    setBorder(new BorderLineRound());
   }
   
   private void txtFocusLost(FocusEvent evt){

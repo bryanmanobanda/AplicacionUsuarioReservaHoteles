@@ -9,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,18 +20,18 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 public class JTextCalendar extends JTextField {
   private final Dimension d = new Dimension(150, 25);
-  private final JLabel icon = new JLabel(new ImageIcon((getClass().getResource("/Assets/Dialogo/icoBus.png"))));
-  private final BorderLineRound border = new BorderLineRound(new Color(219, 157, 121), true);
+  private final JLabel icon = new JLabel(new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/icoBus.png")))));
+  private final BorderLineRound border = new BorderLineRound();
   public JDateChooser calendar = new JDateChooser();
   private final SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-  private JButton button = new JButton();
-  JLabel fecha = new JLabel();
+  private JButton button;
+  JLabel fecha;
   
   public JTextCalendar(JLabel j, GregorianCalendar gcal) {
     fecha = j;
     calendar.setCalendar(gcal);
     button = calendar.getCalendarButton();
-    button.setIcon(new ImageIcon((getClass().getResource("/Assets/Dialogo/enable.png"))));
+    button.setIcon(new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/enable.png")))));
     button.setOpaque(true);
     button.setBorder(null);
     button.setContentAreaFilled(false);

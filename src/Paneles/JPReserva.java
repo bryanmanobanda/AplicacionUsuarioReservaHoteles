@@ -150,7 +150,7 @@ public class JPReserva extends javax.swing.JPanel {
     precioHab = 0.0;
     for(int i = 0; i < numHab;i++){
       Habitacion.add(caja.get(i));
-      precioHab += caja.get(i).getHabitacionselec().getPrecio();
+      precioHab += caja.get(i).getHabitacionSeleccionada().getPrecio();
     }
     nombre.setText(nombreCliente);
     pais.setText(clientePais);
