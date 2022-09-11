@@ -3,6 +3,7 @@ package Interfaces;
 import Diseño.JButtonRound;
 import Paneles.JPIniciarSesion;
 import Paneles.JPRegistrar;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,77 +11,59 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class JFAcceso extends javax.swing.JFrame implements  ActionListener{
-  JPIniciarSesion inicio;
-  JPRegistrar registro;
-  JButtonRound uiBoton;
-  int xMouse, yMouse;
-  public JFAcceso() throws ParseException {
-    initComponents();
-    uiBoton = new JButtonRound(jBRegistro);
-    uiBoton.botonRegistrarAmarillo(jBRegistro);
-    uiBoton = new JButtonRound(jBInicio);
-    uiBoton.botonInicioAmarillo(jBInicio);
-    this.setResizable(false);
-    this.setLocationRelativeTo(null);
-  }
-  
-  private void deshabilitarBoton(){
-    boolean inicioVisible = false, registroVisible=true;
-    /*
-    if(inicio.isVisible()){
-      jBInicio.setEnabled(false);
-      jBRegistro.setEnabled(true);
-    }else if(registro.isVisible()){
-      jBInicio.setEnabled(true);
-      jBRegistro.setEnabled(false);
-    }*/
-    if(registro.isVisible()){
-      inicioVisible = true;
-      registroVisible = false;
-    }
-    jBInicio.setEnabled(inicioVisible);
-    jBRegistro.setEnabled(registroVisible);
-  }
-  
-  private void prepararEntornoInicio(){
-      jPEntorno.add(inicio);
-      inicio.setVisible(true);
-      registro.setVisible(false);
-  }
-  
-  private void prepararEntornoRegistro(){
-     jPEntorno.add(registro);
-     inicio.setVisible(false);
-     registro.setVisible(true); 
-  }
-  
-  public void habilitarPanel(JPIniciarSesion inicio1, JPRegistrar registro1, String nombre){
-    inicio = inicio1;
-    registro = registro1;
-    /*if("Inicio".equals(nombre)){
-      jPEntorno.add(inicio);
-      inicio.setVisible(true);
-      registro.setVisible(false);
-      deshabilitarBoton();
-    }else{
-      jPEntorno.add(registro);
-      inicio.setVisible(false);
-      registro.setVisible(true);
-      deshabilitarBoton();
-    }*/
-    
-    if("Inicio".equals(nombre)){
-      prepararEntornoInicio();
-    }else{
-      prepararEntornoRegistro();
-    }
-    deshabilitarBoton();
-    jBRegistro.addActionListener(this);
-    jBInicio.addActionListener(this);
-  }
+public class JFAcceso extends javax.swing.JFrame implements ActionListener {
+    JPIniciarSesion inicio;
+    JPRegistrar registro;
+    JButtonRound uiBoton;
+    int xMouse, yMouse;
 
-  @SuppressWarnings("unchecked")
+    public JFAcceso() throws ParseException {
+        initComponents();
+        uiBoton = new JButtonRound(jBRegistro);
+        uiBoton.botonRegistrarAmarillo(jBRegistro);
+        uiBoton = new JButtonRound(jBInicio);
+        uiBoton.botonInicioAmarillo(jBInicio);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+    }
+
+    private void deshabilitarBoton() {
+        boolean inicioVisible = false, registroVisible = true;
+        if (registro.isVisible()) {
+            inicioVisible = true;
+            registroVisible = false;
+        }
+        jBInicio.setEnabled(inicioVisible);
+        jBRegistro.setEnabled(registroVisible);
+    }
+
+    private void prepararEntornoInicio() {
+        jPEntorno.add(inicio);
+        inicio.setVisible(true);
+        registro.setVisible(false);
+    }
+
+    private void prepararEntornoRegistro() {
+        jPEntorno.add(registro);
+        inicio.setVisible(false);
+        registro.setVisible(true);
+    }
+
+    public void habilitarPanel(JPIniciarSesion inicio1, JPRegistrar registro1, String nombre) {
+        inicio = inicio1;
+        registro = registro1;
+
+        if ("Inicio".equals(nombre)) {
+            prepararEntornoInicio();
+        } else {
+            prepararEntornoRegistro();
+        }
+        deshabilitarBoton();
+        jBRegistro.addActionListener(this);
+        jBInicio.addActionListener(this);
+    }
+
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -154,9 +137,11 @@ public class JFAcceso extends javax.swing.JFrame implements  ActionListener{
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPCerrarMouseClicked(evt);
             }
+
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jPCerrarMouseEntered(evt);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jPCerrarMouseExited(evt);
             }
@@ -176,69 +161,69 @@ public class JFAcceso extends javax.swing.JFrame implements  ActionListener{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-  private void jPBarraMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPBarraMousePressed
-    xMouse = evt.getX();
-    yMouse = evt.getY();
-  }//GEN-LAST:event_jPBarraMousePressed
+    private void jPBarraMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPBarraMousePressed
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_jPBarraMousePressed
 
-  private void jPBarraMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPBarraMouseDragged
-    int x = evt.getXOnScreen();
-    int y = evt.getYOnScreen();
-    this.setLocation(x - xMouse, y - yMouse );
-  }//GEN-LAST:event_jPBarraMouseDragged
+    private void jPBarraMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPBarraMouseDragged
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xMouse, y - yMouse);
+    }//GEN-LAST:event_jPBarraMouseDragged
 
-  private void jPCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseClicked
-    dispose();
-  }//GEN-LAST:event_jPCerrarMouseClicked
+    private void jPCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseClicked
+        dispose();
+    }//GEN-LAST:event_jPCerrarMouseClicked
 
-  private void jPCerrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseEntered
-    jPCerrar.setBackground(new Color(219, 67, 57));
-    jlCerrar.setForeground(Color.white);
-  }//GEN-LAST:event_jPCerrarMouseEntered
+    private void jPCerrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseEntered
+        jPCerrar.setBackground(new Color(219, 67, 57));
+        jlCerrar.setForeground(Color.white);
+    }//GEN-LAST:event_jPCerrarMouseEntered
 
-  private void jPCerrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseExited
-    jPCerrar.setBackground(Color.white);
-    jlCerrar.setForeground(Color.black);
-  }//GEN-LAST:event_jPCerrarMouseExited
+    private void jPCerrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseExited
+        jPCerrar.setBackground(Color.white);
+        jlCerrar.setForeground(Color.black);
+    }//GEN-LAST:event_jPCerrarMouseExited
 
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+    /**
+     * @param args the command line arguments
      */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(JFAcceso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(JFAcceso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(JFAcceso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(JFAcceso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
-
-    /* Create and display the form */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
         try {
-          new JFAcceso().setVisible(true);
-        } catch (ParseException ex) {
-          Logger.getLogger(JFAcceso.class.getName()).log(Level.SEVERE, null, ex);
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(JFAcceso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(JFAcceso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(JFAcceso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(JFAcceso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-      }
-    });
-  }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new JFAcceso().setVisible(true);
+                } catch (ParseException ex) {
+                    Logger.getLogger(JFAcceso.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBInicio;
@@ -253,31 +238,16 @@ public class JFAcceso extends javax.swing.JFrame implements  ActionListener{
     private javax.swing.JLabel jlCerrar;
     // End of variables declaration//GEN-END:variables
 
-  @Override
-  public void actionPerformed(ActionEvent ae) {
-    Object evt = ae.getSource();
-    /*
-    if(evt.equals(jBInicio)){
-      registro.setVisible(false);
-      inicio.setVisible(true);
-      jPEntorno.add(inicio);
-      jPEntorno.validate();
-      deshabilitarBoton();
-    }  
-    if(evt.equals(jBRegistro)){
-      registro.setVisible(true);
-      inicio.setVisible(false);
-      jPEntorno.add(registro);
-      jPEntorno.validate();
-      deshabilitarBoton();
-    }*/
-    if(evt.equals(jBInicio)){
-      prepararEntornoInicio();
-    } 
-    if(evt.equals(jBRegistro)){
-      prepararEntornoRegistro();
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        Object evt = ae.getSource();
+        if (evt.equals(jBInicio)) {
+            prepararEntornoInicio();
+        }
+        if (evt.equals(jBRegistro)) {
+            prepararEntornoRegistro();
+        }
+        jPEntorno.validate();
+        deshabilitarBoton();
     }
-    jPEntorno.validate();
-    deshabilitarBoton();
-  }
 }

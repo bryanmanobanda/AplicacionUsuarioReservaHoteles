@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public  class SQLCliente extends SQL{
 
-    public void registrarUsuario(Cliente cliente) throws SQLException, ClassNotFoundException {
+    public void registrarUsuario(Cliente cliente) throws SQLException{
         connection = getConnection();
         ps = connection.prepareStatement("insert into CLIENTE (NOMBRE, CORREO, CONTRASENIA, PAIS, FECHA_NAC) values(?,?,?,?,?)");
         ps.setString(1, cliente.getNombre());
@@ -17,7 +17,7 @@ public  class SQLCliente extends SQL{
         connection.close();
     }
 
-    public int verificarCorreo(String correo) throws SQLException, ClassNotFoundException {
+    public int verificarCorreo(String correo) throws SQLException{
         connection = getConnection();
         ps = connection.prepareStatement("select count(ID_USUARIO) from CLIENTE where CORREO=?");
         ps.setString(1, correo);

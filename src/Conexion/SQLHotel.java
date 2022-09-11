@@ -30,12 +30,11 @@ public class SQLHotel extends SQL {
     }
 
     public ArrayList<String> listarPaises() throws SQLException {
-        int i = 0;
         ArrayList<String> paises = new ArrayList<>();
         connection = getConnection();
         ps = connection.prepareStatement("SELECT DISTINCT(PAIS) FROM HOTEL");
         rs = ps.executeQuery();
-
+        connection.close();
         while (rs.next()) {
             paises.add(rs.getString("PAIS"));
         }

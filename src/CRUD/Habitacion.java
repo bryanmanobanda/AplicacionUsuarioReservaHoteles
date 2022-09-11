@@ -10,27 +10,6 @@ public class Habitacion {
     private int numCamas;
     private double precio;
 
-    public Habitacion(int idHotel, String continente, int numeroHabitacion) {
-        this.idHotel = idHotel;
-        this.continente = continente;
-        this.numeroHabitacion = numeroHabitacion;
-    }
-
-    public Habitacion(int idHotel, String continente, int numeroHabitacion, TipoHabitacion tipoHabitacion, boolean disponibilidad, String descripcion, int numCamas, double precio) {
-        this.idHotel = idHotel;
-        this.continente = continente;
-        this.numeroHabitacion = numeroHabitacion;
-        this.tipoHabitacion = tipoHabitacion;
-        this.disponibilidad = disponibilidad;
-        this.descripcion = descripcion;
-        this.numCamas = numCamas;
-        this.precio = precio;
-    }
-
-    public Habitacion(int idHotel) {
-        this.idHotel = idHotel;
-    }
-
     public int getIdHotel() {
         return idHotel;
     }
@@ -89,5 +68,9 @@ public class Habitacion {
 
     public void setNumeroHabitacion(int numeroHabitacion) {
         this.numeroHabitacion = numeroHabitacion;
+    }
+
+    public void setIdHotel(int idHotel) {
+        this.idHotel = idHotel;
     }
 }

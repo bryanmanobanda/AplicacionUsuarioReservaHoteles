@@ -8,35 +8,26 @@ import java.awt.event.FocusListener;
 import javax.swing.JComboBox;
 
 public class JComboBoxRound extends JComboBox {
-private final Dimension d = new Dimension(150, 25);
-  private final BorderLineRound border = new BorderLineRound();
-  public JTextFieldRound combo;
-  
-  public JComboBoxRound(JComboBox j) {
-    j.setUI((JComboBoxUI.createUI(this)));
-    j.setBorder(border);
-    j.setPreferredSize(d);
-    j.setFont(new Font("Open Sans", Font.PLAIN, 14));
-    j.setForeground(new Color(81,81,73));
-    j.setBackground(new Color(219, 157, 121));
-    j.addFocusListener(new FocusListener() {
-      @Override
-      public void focusGained(FocusEvent e) {
-        txtFocusGained(e);
-      }
+    private final Dimension dimension = new Dimension(150, 25);
+    private final BorderLineRound border = new BorderLineRound();
 
-      @Override
-      public void focusLost(FocusEvent e) {
-        txtFocusLost(e);
-      }
-    }); 
-  }
+    public JComboBoxRound(JComboBox jComboBox) {
+        jComboBox.setUI((JComboBoxUI.createUI(this)));
+        jComboBox.setBorder(border);
+        jComboBox.setPreferredSize(dimension);
+        jComboBox.setFont(new Font("Open Sans", Font.PLAIN, 14));
+        jComboBox.setForeground(new Color(81, 81, 73));
+        jComboBox.setBackground(new Color(219, 157, 121));
+        jComboBox.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                setBorder(new BorderLineRound());
+            }
 
-  private void txtFocusGained(FocusEvent evt){
-    setBorder(new BorderLineRound());
-  }
-  
-  private void txtFocusLost(FocusEvent evt){
-    setBorder(border);
-  }
+            @Override
+            public void focusLost(FocusEvent e) {
+                setBorder(border);
+            }
+        });
+    }
 }

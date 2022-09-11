@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SQLHabitacion extends SQL{
-    SQLTipoHab tipoHab;
+    private SQLTipoHab tipoHab;
 
     public void modificarHabitacion(Habitacion habitacion) throws SQLException, ClassNotFoundException {
         connection = getConnection();
@@ -50,7 +50,8 @@ public class SQLHabitacion extends SQL{
         rs = ps.executeQuery();
         connection.close();
         while (rs.next()) {
-            Habitacion habitacion = new Habitacion(rs.getInt("ID_HOTEL"));
+            Habitacion habitacion = new Habitacion();
+            habitacion.setIdHotel(rs.getInt("ID_HOTEL"));
             habitacion.setContinente(rs.getString("CONTINENTE"));
             habitacion.setNumeroHabitacion(rs.getInt("NUMEROHAB"));
             TipoHabitacion tipoHabitacion = new TipoHabitacion(rs.getString("NOMBRE_TIPO"));

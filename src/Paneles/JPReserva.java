@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import javax.swing.JLabel;
@@ -27,13 +26,13 @@ public class JPReserva extends javax.swing.JPanel {
   int tamText = 20, x = 220, y = 30, numHab=0;
   public Double precioHab = 0.0;
   GregorianCalendar inicio = new GregorianCalendar(Locale.US);
-  GregorianCalendar finalr = new GregorianCalendar(2021, Calendar.SEPTEMBER,18);
+  GregorianCalendar finalr = new GregorianCalendar(Locale.US);
   Dimension d = new Dimension(300, 25);
   Dimension d1 = new Dimension(150, 25);
   JScrollPane jsPanel = new JScrollPane();
   JLabelTitle jLTitulo, jLNombre, jLHabitaciones, jLPais, jLPrecio, jLFechaInicio;
 
-  public JPReserva() throws ParseException {
+  public JPReserva() {
     initComponents();
     Habitacion.setLayout(new GridLayout(0, 1, 10, 30));
     jsPanel.setPreferredSize(new Dimension(300, 457));
@@ -58,44 +57,15 @@ public class JPReserva extends javax.swing.JPanel {
       public void mousePressed(MouseEvent me) {
       }
     };
-    /*nombre.setEnabled(false);
-    pais.setEnabled(false);
-    habitacion.setEnabled(false);
-    precio.setEnabled(false);*/
     ocultarEliementos();
-    /*nombre.setPreferredSize(d);
-    pais.setPreferredSize(d);
-    habitacion.setPreferredSize(d1);
-    precio.setPreferredSize(d1);*/
     dimensionarElemenyos();
-    /*jLTitulo = new JLabelTitle("",  40);
-    jLNombre = new JLabelTitle("Nombre",  tamText);
-    jLPais = new JLabelTitle("País",  tamText); 
-    jLFechaInicio = new JLabelTitle("Fecha Inicio",  tamText);
-    jLHabitaciones = new JLabelTitle("Habitaciones",  tamText);
-    jLPrecio = new JLabelTitle("Precio", tamText);
-    calendar = new JTextCalendar(jDateInicio, inicio);
-    calendarf = new JTextCalendar(jDateFinal, finalr);*/
     inicializarEliementos();
-    calendar.getCalendar().setMinSelectableDate(dateFormat.parse("2022-09-09"));
-    calendarf.getCalendar().setMinSelectableDate(dateFormat.parse("2022-09-10"));
+    calendar.getCalendar().setMinSelectableDate(inicio.getTime());
+    calendarf.getCalendar().setMinSelectableDate(finalr.getTime());
     jLFondo.setSize(new Dimension(389, 457));
     Component jLFechaFinal = new JLabelTitle("Fecha Final", tamText );
     Informacion.add(jLFechaFinal, new AbsoluteConstraints(180+ x, 205+ y,-1, -1));
     Informacion.add(jLFondo, new AbsoluteConstraints(-10, -10 ,-1, -1));
-    /*
-    Informacion.add(jLTitulo, new AbsoluteConstraints(x, 20 ,-1, -1));
-    Informacion.add(jLNombre, new AbsoluteConstraints(x, 70+ y,-1, -1));
-    Informacion.add(nombre, new AbsoluteConstraints(x, 95+ y,-1, -1));
-    Informacion.add(jLPais, new AbsoluteConstraints(x, 135+ y,-1, -1));
-    Informacion.add(pais, new AbsoluteConstraints(x, 160+ y,-1, -1));
-    Informacion.add(jLFechaInicio, new AbsoluteConstraints(x, 205+ y,-1, -1));
-    Informacion.add(jDateInicio, new AbsoluteConstraints(x, 230+ y,-1, -1));
-    Informacion.add(jDateFinal, new AbsoluteConstraints(180+ x, 230+ y,-1, -1));
-    Informacion.add(jLHabitaciones, new AbsoluteConstraints(x, 270+ y,-1, -1));
-    Informacion.add(habitacion, new AbsoluteConstraints(x, 295+ y,-1, -1));
-    Informacion.add(jLPrecio, new AbsoluteConstraints(180 + x, 270+ y,-1, -1));
-    Informacion.add(precio, new AbsoluteConstraints(180 + x, 295+ y,-1, -1));*/
     posicionarElementos();
     this.add(jsPanel, BorderLayout.WEST);
     jsPanel.getViewport().add(Habitacion);
@@ -123,6 +93,7 @@ public class JPReserva extends javax.swing.JPanel {
     jLHabitaciones = new JLabelTitle("Habitaciones",  tamText);
     jLPrecio = new JLabelTitle("Precio", tamText);
     calendar = new JTextCalendar(jDateInicio, inicio);
+    finalr.add(GregorianCalendar.DAY_OF_MONTH, 1);
     calendarf = new JTextCalendar(jDateFinal, finalr);
   }
   
@@ -158,10 +129,6 @@ public class JPReserva extends javax.swing.JPanel {
     precio.setText(String.valueOf(precioHab));
     jLTitulo.setText(nombreHotel);
   }
-  
-  public void setjDateFinal(JLabel jDateFinal) {
-    this.jDateFinal = jDateFinal;
-  }
 
   public JPanel getHabitacion() {
     return Habitacion;
@@ -173,18 +140,6 @@ public class JPReserva extends javax.swing.JPanel {
 
   public JPanel getInformacion() {
     return Informacion;
-  }
-
-  public void setInformacion(JPanel Informacion) {
-    this.Informacion = Informacion;
-  }
-
-  public JLabel getjDateInicio() {
-    return jDateInicio;
-  }
-
-  public void setjDateInicio(JLabel jDateInicio) {
-    this.jDateInicio = jDateInicio;
   }
   
   @SuppressWarnings("unchecked")

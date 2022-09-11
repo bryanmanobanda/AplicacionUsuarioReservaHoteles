@@ -23,10 +23,6 @@ public class Cliente {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public Cliente() {
-
-    }
-
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -45,10 +41,6 @@ public class Cliente {
 
     public String getCorreo() {
         return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
     }
 
     public String getContrasenia() {

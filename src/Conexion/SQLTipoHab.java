@@ -27,7 +27,7 @@ public class SQLTipoHab extends SQL {
         connection = getConnection();
         ps = connection.prepareStatement("SELECT NOMBRE_TIPO FROM TIPO_HAB");
         rs = ps.executeQuery();
-
+        connection.close();
         while (rs.next()) {
             tipos.add(rs.getString("NOMBRE_TIPO"));
         }

@@ -15,43 +15,27 @@ public class Hotel {
     private String ciudad;
     private Icon icono;
 
-    public Hotel() {
-        this.idHotel = 0;
-        this.nombre = "";
-        this.continente = "";
-        this.descripcion = "";
-        this.prestigio = 0;
-        this.correo = "";
-        this.telefono = "";
-        this.pais = "";
-        this.ciudad = "";
-    }
-
-
-    public Hotel(int idHotel, String nombre, String continente, String descripcion, int prestigio, String correo, String telefono, String pais, String ciudad) {
-        this.idHotel = idHotel;
-        this.nombre = nombre;
-        this.continente = continente;
-        this.descripcion = descripcion;
-        this.prestigio = prestigio;
-        this.correo = correo;
-        this.telefono = telefono;
-        this.pais = pais;
-        this.ciudad = ciudad;
-    }
-
     public Icon getIcono() {
         return icono;
     }
 
-    //TODO: Refactor
     private void setIcono() {
         switch (prestigio) {
-            case 1 : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/1Hotel.png"))));
-            case 2 : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/2Hotel.png"))));
-            case 3 : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/3Hotel.png"))));
-            case 4 : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/4Hotel.png"))));
-            case 5 : icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/5Hotel.png"))));
+            case 1:
+                icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/1Hotel.png"))));
+                break;
+            case 2:
+                icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/2Hotel.png"))));
+                break;
+            case 3:
+                icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/3Hotel.png"))));
+                break;
+            case 4:
+                icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/4Hotel.png"))));
+                break;
+            case 5:
+                icono = new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Hotel/5Hotel.png"))));
+                break;
         }
     }
 

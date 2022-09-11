@@ -3,6 +3,7 @@ package Interfaces;
 import CRUD.*;
 import Conexion.*;
 import Diseño.*;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -11,10 +12,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.logging.*;
 import javax.swing.*;
+
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
-public class JFReserva extends javax.swing.JFrame{
-    int respuesta, xMouse, yMouse, tamText = 20, x =20, y = 10 ;
+public class JFReserva extends javax.swing.JFrame {
+    int respuesta, xMouse, yMouse, tamText = 20, x = 20, y = 10;
     Cliente cliente;
     CajaReserva reservaSel;
     ListaReservas listaReserva1;
@@ -27,143 +29,110 @@ public class JFReserva extends javax.swing.JFrame{
     SQLReserva conexReserva = new SQLReserva();
     SQLHabitacion_Reserva conexHabitacionReserva = new SQLHabitacion_Reserva();
     SQLCliente conexCliente = new SQLCliente();
-    
-  public JFReserva() throws ParseException, ClassNotFoundException, SQLException {
-    initComponents();
-    /*
-    jNombre = new JLabelTitle("Nombre", tamText);
-    jCorreo = new JLabelTitle("Correo", tamText);
-    jPais = new JLabelTitle("País", tamText);
-    jFechaNac = new JLabelTitle("Fecha Nacimiento", tamText);*/
-    agregarTitulos();
-    /*
-    boton = new JButtonRound(jBCambiarPassword);
-    tnombre = new JTextFieldRound("");
-    tcorreo = new JTextFieldRound("");
-    tpais = new JTextFieldRound("");
-    tfechaNac = new JTextFieldRound("");*/
-    invocarElementosPanel();
-    /*
-    tnombre.setEnabled(false);
-    tcorreo.setEnabled(false);
-    tpais.setEnabled(false);
-    tfechaNac.setEnabled(false);*/
-    bloquearElementos();
-    /*
-    tnombre.setPreferredSize(dimensionCuadro);
-    tcorreo.setPreferredSize(dimensionCuadro);
-    tpais.setPreferredSize(dimensionCuadro);
-    tfechaNac.setPreferredSize(dimensionCuadro);*/
-    ajustarTamanioElementos(); 
-    /*
-    jPLateral.add(jNombre, new AbsoluteConstraints(x, 200 + y,-1, -1));
-    jPLateral.add(tnombre, new AbsoluteConstraints(x, 225 + y,-1, -1));
-    jPLateral.add(jCorreo, new AbsoluteConstraints(x, 255 + y,-1, -1));
-    jPLateral.add(tcorreo, new AbsoluteConstraints(x, 280 + y,-1, -1));
-    jPLateral.add(jPais, new AbsoluteConstraints(x, 310 + y,-1, -1));
-    jPLateral.add(tpais, new AbsoluteConstraints(x, 335 + y,-1, -1));
-    jPLateral.add(jFechaNac, new AbsoluteConstraints(x, 365 + y,-1, -1));
-    jPLateral.add(tfechaNac, new AbsoluteConstraints(x, 390 + y,-1, -1));
-    jPLateral.add(jBCambiarPassword, new AbsoluteConstraints(x+40, 420 + y,-1, -1));*/
-    agregarElementosPanelLateral();
-    
-    listaReserva1 = new ListaReservas();
-    jPEntorno.add(listaReserva1, BorderLayout.CENTER);
-    jPEntorno.validate();
-    this.setResizable(false);
-    this.setLocationRelativeTo(null);
-  }
-  
-  public final void agregarTitulos(){
-    jNombre = new JLabelTitle("Nombre", tamText);
-    jCorreo = new JLabelTitle("Correo", tamText);
-    jPais = new JLabelTitle("País", tamText);
-    jFechaNac = new JLabelTitle("Fecha Nacimiento", tamText);  
-  }
-  
-   public final void invocarElementosPanel(){
-    boton = new JButtonRound(jBCambiarPassword);
-    tnombre = new JTextFieldRound("");
-    tcorreo = new JTextFieldRound("");
-    tpais = new JTextFieldRound("");
-    tfechaNac = new JTextFieldRound(""); 
-    boton.modificarContrasenia(jBCambiarPassword);
-  }
-   
-  public final void bloquearElementos(){
-    tnombre.setEnabled(false);
-    tcorreo.setEnabled(false);
-    tpais.setEnabled(false);
-    tfechaNac.setEnabled(false);
-  }
-  
-  public final void ajustarTamanioElementos(){
-    tnombre.setPreferredSize(dimensionCuadro);
-    tcorreo.setPreferredSize(dimensionCuadro);
-    tpais.setPreferredSize(dimensionCuadro);
-    tfechaNac.setPreferredSize(dimensionCuadro);
-  }
-  
-  public final void agregarElementosPanelLateral(){
-      int pos [] = {200,225,225,280,310,335,365,390,420};
-      Component etiquetas [] = {jNombre,tnombre,jCorreo,tcorreo,jPais,tpais,jFechaNac,tfechaNac,jBCambiarPassword};
-      for (int i = 0; i < pos.length; i++) {
-          if (i==9) x+=40;
-          jPLateral.add(etiquetas[i], new AbsoluteConstraints(x, pos[i]+y,-1,-1));
-      }
-  }
-   
-  public void agregarReservas( ) throws ClassNotFoundException, SQLException{
-    listaReserva = conexReserva.listarReservasPorCliente(cliente);
-      for (Reserva reserva : listaReserva) {
-          reservaSel = new CajaReserva(reserva) {
-              @Override
-              public void mouseClicked(MouseEvent me) {
-                  respuesta = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la reserva?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))));
-                  if (respuesta == 0) {
-                      super.mouseClicked(me);
-                      reservaEliminar = super.getreservaSelec();
-                      eliminarReservaSelecionada();
-                      try {
-                          reservaEliminar = super.getreservaSelec();
-                          conexHabitacionReserva.eliminarHabitacionReserva(reservaEliminar);
-                          conexReserva.eliminarReserva(reservaEliminar);
-                          listaReserva1.limpiarContenido();
-                          agregarReservas();
-                      } catch (SQLException | ClassNotFoundException ex) {
-                          Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
-                      }
-                      JOptionPane.showMessageDialog(null, "Reservada eliminada", "", JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/exitoEs.png")))));
-                  }
-              }
-          };
-          listaReserva1.agregarCajaReserva(reservaSel);
-      }
-    jPEntorno.validate();
-  }
-  
-  public void eliminarReservaSelecionada(){
 
-     try {
-                          //reservaEliminar = super.getreservaSelec();
-                          conexHabitacionReserva.eliminarHabitacionReserva(reservaEliminar);
-                          conexReserva.eliminarReserva(reservaEliminar);
-                          //listaReserva1.limpiar();
-                          agregarReservas();
-                      } catch (SQLException | ClassNotFoundException ex) {
-                          Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
-                      } 
-  }
-  
-  public void ingreso(Cliente clienteConect){
-    cliente = clienteConect;
-    tnombre.setText(cliente.getNombre());
-    tcorreo.setText(cliente.getCorreo());
-    tpais.setText(cliente.getPais());
-    tfechaNac.setText(cliente.getFechaNacimiento().toString());
-  }
-  
-  @SuppressWarnings("unchecked")
+    public JFReserva() throws ParseException, ClassNotFoundException, SQLException {
+        initComponents();
+        agregarTitulos();
+        invocarElementosPanel();
+        bloquearElementos();
+        ajustarTamanioElementos();
+        agregarElementosPanelLateral();
+
+        listaReserva1 = new ListaReservas();
+        jPEntorno.add(listaReserva1, BorderLayout.CENTER);
+        jPEntorno.validate();
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+    }
+
+    public final void agregarTitulos() {
+        jNombre = new JLabelTitle("Nombre", tamText);
+        jCorreo = new JLabelTitle("Correo", tamText);
+        jPais = new JLabelTitle("País", tamText);
+        jFechaNac = new JLabelTitle("Fecha Nacimiento", tamText);
+    }
+
+    public final void invocarElementosPanel() {
+        boton = new JButtonRound(jBCambiarPassword);
+        tnombre = new JTextFieldRound("");
+        tcorreo = new JTextFieldRound("");
+        tpais = new JTextFieldRound("");
+        tfechaNac = new JTextFieldRound("");
+        boton.modificarContrasenia(jBCambiarPassword);
+    }
+
+    public final void bloquearElementos() {
+        tnombre.setEnabled(false);
+        tcorreo.setEnabled(false);
+        tpais.setEnabled(false);
+        tfechaNac.setEnabled(false);
+    }
+
+    public final void ajustarTamanioElementos() {
+        tnombre.setPreferredSize(dimensionCuadro);
+        tcorreo.setPreferredSize(dimensionCuadro);
+        tpais.setPreferredSize(dimensionCuadro);
+        tfechaNac.setPreferredSize(dimensionCuadro);
+    }
+
+    public final void agregarElementosPanelLateral() {
+        int pos[] = {200, 225, 255, 280, 310, 335, 365, 390, 420};
+        Component etiquetas[] = {jNombre, tnombre, jCorreo, tcorreo, jPais, tpais, jFechaNac, tfechaNac, jBCambiarPassword};
+        for (int i = 0; i < pos.length; i++) {
+            if (i == 8) x += 40;
+            jPLateral.add(etiquetas[i], new AbsoluteConstraints(x, pos[i] + y, -1, -1));
+        }
+    }
+
+    public void agregarReservas() throws ClassNotFoundException, SQLException {
+        listaReserva = conexReserva.listarReservasPorCliente(cliente);
+        for (Reserva reserva : listaReserva) {
+            reservaSel = new CajaReserva(reserva) {
+                @Override
+                public void mouseClicked(MouseEvent me) {
+                    respuesta = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la reserva?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))));
+                    if (respuesta == 0) {
+                        super.mouseClicked(me);
+                        reservaEliminar = super.getreservaSelec();
+                        eliminarReservaSelecionada();
+                        try {
+                            reservaEliminar = super.getreservaSelec();
+                            conexHabitacionReserva.eliminarHabitacionReserva(reservaEliminar);
+                            conexReserva.eliminarReserva(reservaEliminar);
+                            listaReserva1.limpiarContenido();
+                            agregarReservas();
+                        } catch (SQLException | ClassNotFoundException ex) {
+                            Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        JOptionPane.showMessageDialog(null, "Reservada eliminada", "", JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/exitoEs.png")))));
+                    }
+                }
+            };
+            listaReserva1.agregarCajaReserva(reservaSel);
+        }
+        jPEntorno.validate();
+    }
+
+    public void eliminarReservaSelecionada() {
+
+        try {
+            conexHabitacionReserva.eliminarHabitacionReserva(reservaEliminar);
+            conexReserva.eliminarReserva(reservaEliminar);
+            agregarReservas();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void ingreso(Cliente clienteConect) {
+        cliente = clienteConect;
+        tnombre.setText(cliente.getNombre());
+        tcorreo.setText(cliente.getCorreo());
+        tpais.setText(cliente.getPais());
+        tfechaNac.setText(cliente.getFechaNacimiento().toString());
+    }
+
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -240,9 +209,11 @@ public class JFReserva extends javax.swing.JFrame{
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPCerrarMouseClicked(evt);
             }
+
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jPCerrarMouseEntered(evt);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jPCerrarMouseExited(evt);
             }
@@ -265,123 +236,101 @@ public class JFReserva extends javax.swing.JFrame{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-  private void jPBarraMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPBarraMousePressed
-    xMouse = evt.getX();
-    yMouse = evt.getY();
-  }//GEN-LAST:event_jPBarraMousePressed
+    private void jPBarraMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPBarraMousePressed
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_jPBarraMousePressed
 
-  private void jPBarraMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPBarraMouseDragged
-    int x = evt.getXOnScreen();
-    int y = evt.getYOnScreen();
-    this.setLocation(x - xMouse, y - yMouse );
-  }//GEN-LAST:event_jPBarraMouseDragged
+    private void jPBarraMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPBarraMouseDragged
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xMouse, y - yMouse);
+    }//GEN-LAST:event_jPBarraMouseDragged
 
-  private void jPCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseClicked
-    dispose();
-  }//GEN-LAST:event_jPCerrarMouseClicked
+    private void jPCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseClicked
+        dispose();
+    }//GEN-LAST:event_jPCerrarMouseClicked
 
-  private void jPCerrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseEntered
-    jPCerrar.setBackground(new Color(219, 67, 57));
-    jlCerrar.setForeground(Color.white);
-  }//GEN-LAST:event_jPCerrarMouseEntered
+    private void jPCerrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseEntered
+        jPCerrar.setBackground(new Color(219, 67, 57));
+        jlCerrar.setForeground(Color.white);
+    }//GEN-LAST:event_jPCerrarMouseEntered
 
-  private void jPCerrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseExited
-    jPCerrar.setBackground(Color.white);
-    jlCerrar.setForeground(Color.black);
-  }//GEN-LAST:event_jPCerrarMouseExited
+    private void jPCerrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPCerrarMouseExited
+        jPCerrar.setBackground(Color.white);
+        jlCerrar.setForeground(Color.black);
+    }//GEN-LAST:event_jPCerrarMouseExited
 
-  public void cambiarContrasenia(Object anteriorO ){
-      String nueva = (String)  anteriorO;
-                        cliente.setContrasenia(CifrarContrasenia.md5(nueva));
-                        try {
-                            conexCliente.modificarContrasenia(cliente);
-                        } catch (SQLException | ClassNotFoundException ex) {
-                            Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-  }
-  
+    public void cambiarContrasenia(Object anteriorO) {
+        String nueva = (String) anteriorO;
+        cliente.setContrasenia(CifrarContrasenia.md5(nueva));
+        try {
+            conexCliente.modificarContrasenia(cliente);
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void jBCambiarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCambiarPasswordActionPerformed
-        int resp = JOptionPane.showConfirmDialog(null, "¿Desea cambiar la contraseña?","",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE,new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))));
+        int resp = JOptionPane.showConfirmDialog(null, "¿Desea cambiar la contraseña?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))));
         Object anteriorO;
         String anterior;
-        if(resp == 0 ){
-            while(true){
-                anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña anterior", "", JOptionPane.QUESTION_MESSAGE,new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))),null,DISPOSE_ON_CLOSE);
-                /*
-                if(anteriorO != null){
-                    anterior = (String) anteriorO;
-                    if(cliente.getContrasenia().equals(CifrarContrasenia.md5(anterior))){
-                        anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña nueva", "", JOptionPane.ERROR_MESSAGE,new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))),null,DISPOSE_ON_CLOSE);
-                        if(anteriorO != null){
-                            String nueva = (String)  anteriorO;
-                            cliente.setContrasenia(CifrarContrasenia.md5(nueva));
-                            try {
-                                conexCliente.modificarContrasenia(cliente);
-                            } catch (SQLException | ClassNotFoundException ex) {
-                                Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            JOptionPane.showMessageDialog(null, "Contraseña cambiada exitosamente", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/listo.png")))));
-                            break;
-                        }else{
-                            JOptionPane.showMessageDialog(null, "Contraseña no cambiada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
-                            break;
-                        }
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Contraseña ingresada no valida", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(null, "Contraseña no cambiada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
+        if (resp == 0) {
+            while (true) {
+                anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña anterior", "", JOptionPane.QUESTION_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))), null, DISPOSE_ON_CLOSE);
+                if (anteriorO == null) {
                     break;
-                }*/
-                if (anteriorO==null) {break;}
+                }
                 anterior = (String) anteriorO;
                 if (cliente.getContrasenia().equals(CifrarContrasenia.md5(anterior))) {
-                    anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña nueva", "", JOptionPane.ERROR_MESSAGE,new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))),null,DISPOSE_ON_CLOSE);
-                        if(anteriorO == null){break;}
-                        cambiarContrasenia(anteriorO);
-                        JOptionPane.showMessageDialog(null, "Contraseña cambiada exitosamente", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/listo.png")))));
-                        return;
+                    anteriorO = JOptionPane.showInputDialog(null, "Ingrese la contraseña nueva", "", JOptionPane.ERROR_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/advertencia.png")))), null, DISPOSE_ON_CLOSE);
+                    if (anteriorO == null) {
+                        break;
+                    }
+                    cambiarContrasenia(anteriorO);
+                    JOptionPane.showMessageDialog(null, "Contraseña cambiada exitosamente", "", JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/listo.png")))));
+                    return;
                 }
-                JOptionPane.showMessageDialog(null, "Contraseña ingresada no valida", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
+                JOptionPane.showMessageDialog(null, "Contraseña ingresada no valida", "", JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
             }
-            JOptionPane.showMessageDialog(null, "Contraseña no cambiada", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
+            JOptionPane.showMessageDialog(null, "Contraseña no cambiada", "", JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
         }
     }//GEN-LAST:event_jBCambiarPasswordActionPerformed
 
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+    /**
+     * @param args the command line arguments
      */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(JFReserva.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-      //</editor-fold>
-    //</editor-fold>
-    //</editor-fold>
-    //</editor-fold>
-    /* Create and display the form */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
         try {
-          new JFReserva().setVisible(true);
-        } catch (ParseException | ClassNotFoundException | SQLException ex) {
-          Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(JFReserva.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-      }
-    });
-  }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new JFReserva().setVisible(true);
+                } catch (ParseException | ClassNotFoundException | SQLException ex) {
+                    Logger.getLogger(JFReserva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCambiarPassword;
