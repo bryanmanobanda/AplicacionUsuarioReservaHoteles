@@ -7,11 +7,10 @@ import Diseño.JButtonRound;
 import Diseño.JLabelTitle;
 import Diseño.JPasswordFieldRound;
 import Diseño.JTextFieldRound;
-import Diseño.UIInforme;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,46 +23,61 @@ public class JPIniciarSesion extends javax.swing.JPanel {
   SQLCliente inicio;
   Cliente cliente;
   JButtonRound btninicio;
-  CifrarContrasenia cifrado;
   JTextFieldRound jTCorreo;
   JPasswordFieldRound jtPass;
-  JLabelTitle jLT;
+  
   JButton JBInicio;
-  UIInforme ui = new UIInforme();
+  JLabelTitle jnombreApp, jCorreo, jContrasenia;
   int tamText = 20;
+  
   public JPIniciarSesion() {
     initComponents();
+    crearElementos();
+    agregarElementos();
+    
+    JBInicio.addMouseListener(new MouseAdapter() {
+      @Override
+        public void mouseClicked(MouseEvent me) {
+          super.mouseClicked(me);
+          String pass = String.valueOf(jtPass.getPassword());
+            cliente = new Cliente(jTCorreo.getText(), CifrarContrasenia.md5(pass));
+            try {
+              if(inicio.iniciarSesion(cliente)){
+                  JOptionPane.showMessageDialog(null, "Inicio de sesión correcto", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/listo.png"))));
+                }else{
+                  JOptionPane.showMessageDialog(null, "Correo o contraseñas incorrectos", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
+                }
+            } catch (SQLException | ClassNotFoundException ex) {
+              Logger.getLogger(JPIniciarSesion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    });
+  }
+  
+  public final void crearElementos(){
     jTCorreo = new JTextFieldRound("Ingrese su correo");
-    jLT = new JLabelTitle("Iniciar en Moon", jLEncabezado, 30);
-    jLT = new JLabelTitle("Correo",jLCorreo, tamText);
-    jLT = new JLabelTitle("Contraseña", jLPass, tamText);
+    jnombreApp = new JLabelTitle("Iniciar en Moon", 30);
+    jCorreo = new JLabelTitle("Correo", tamText);
+    jContrasenia = new JLabelTitle("Contraseña", tamText);
     JBInicio = new JButton();
     btninicio = new JButtonRound(JBInicio);
     btninicio.botonInicioAmarillo(JBInicio);
     jtPass = new JPasswordFieldRound("Password");
-    inicio = new SQLCliente();
-    this.add(jLEncabezado, new AbsoluteConstraints(10, 70,-1, -1));
-    this.add(jLCorreo, new AbsoluteConstraints(30, 120,-1, -1));
+    inicio = new SQLCliente(); 
+  }
+  
+  public final void agregarElementos(){
+      /*this.add(jnombreApp, new AbsoluteConstraints(10, 70,-1, -1));
+    this.add(jCorreo, new AbsoluteConstraints(30, 120,-1, -1));
     this.add(jTCorreo, new AbsoluteConstraints(30, 145,-1, -1));
-    this.add(jLPass, new AbsoluteConstraints(30, 195,-1, -1));
-    this.add(jtPass, new AbsoluteConstraints(30, 220,-1, -1));
-    JBInicio.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent me) {
-        super.mouseClicked(me);
-        String pass = String.valueOf(jtPass.getPassword());
-          cliente = new Cliente(jTCorreo.getText(), cifrado.md5(pass));
-          try {
-          if(inicio.iniciarSesion(cliente)){
-              JOptionPane.showMessageDialog(null, "Inicio de sesión correcto", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/listo.png"))));
-            }else{
-              JOptionPane.showMessageDialog(null, "Correo o contraseñas incorrectos", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((getClass().getResource("/Assets/Dialogo/error.png"))));
-          }
-          } catch (SQLException | ClassNotFoundException ex) {
-          Logger.getLogger(JPIniciarSesion.class.getName()).log(Level.SEVERE, null, ex);
-          }
+    this.add(jContrasenia, new AbsoluteConstraints(30, 195,-1, -1));
+    this.add(jtPass, new AbsoluteConstraints(30, 220,-1, -1));*/
+      int posX[] = {10,30,30,30,30};
+      int posY[] = {70,120,145,195,220};
+      Component etiquetas[]={jnombreApp,jCorreo,jTCorreo,jContrasenia,jtPass};
+      for (int i = 0; i < posX.length; i++) {
+        this.add(etiquetas[i], new AbsoluteConstraints(posX[i],posY[i],-1, -1)); 
       }
-    });
   }
 
   public JButton getJBInicio() {
@@ -83,36 +97,22 @@ public class JPIniciarSesion extends javax.swing.JPanel {
   }
   
   @SuppressWarnings("unchecked")
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-  private void initComponents() {
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-    jLEncabezado = new javax.swing.JLabel();
-    jPLinea = new javax.swing.JPanel();
-    jLCorreo = new javax.swing.JLabel();
-    jLPass = new javax.swing.JLabel();
+        jPLinea = new javax.swing.JPanel();
 
-    setBackground(new java.awt.Color(147, 171, 169));
-    addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseClicked(java.awt.event.MouseEvent evt) {
-        formMouseClicked(evt);
-      }
-    });
-    setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setBackground(new java.awt.Color(147, 171, 169));
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-    jLEncabezado.setFont(new java.awt.Font("Roboto Medium", 0, 30)); // NOI18N
-    jLEncabezado.setForeground(new java.awt.Color(11, 31, 76));
-    jLEncabezado.setText("Iniciar en Moon");
-    add(jLEncabezado, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
-
-    jPLinea.setBackground(new java.awt.Color(153, 153, 153));
-    add(jPLinea, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 205, 1));
-
-    jLCorreo.setText("jLabel1");
-    add(jLCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
-
-    jLPass.setText("jLabel2");
-    add(jLPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
-  }// </editor-fold>//GEN-END:initComponents
+        jPLinea.setBackground(new java.awt.Color(153, 153, 153));
+        add(jPLinea, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 205, 1));
+    }// </editor-fold>//GEN-END:initComponents
 
   private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
     if(String.valueOf(jtPass.getPassword()).isEmpty()){
@@ -126,10 +126,7 @@ public class JPIniciarSesion extends javax.swing.JPanel {
     }
   }//GEN-LAST:event_formMouseClicked
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JLabel jLCorreo;
-  private javax.swing.JLabel jLEncabezado;
-  private javax.swing.JLabel jLPass;
-  private javax.swing.JPanel jPLinea;
-  // End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPLinea;
+    // End of variables declaration//GEN-END:variables
 }

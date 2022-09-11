@@ -35,24 +35,23 @@ import javax.swing.*;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
-public class PaginaPrincipal extends javax.swing.JFrame {
+public final class PaginaPrincipal extends javax.swing.JFrame {
   ListaHoteles lista;
   ListaHabitaciones listaHab;
   JButton logo;
-  int xMouse, yMouse, numeroHabitacion = 0,  c = -1;
+  int xMouse, yMouse, numeroHabitacion = 0;
   JButtonRound boton;
   JFAcceso acceso;
   JFReserva jfreservas;
   JPIniciarSesion inicio;
   JPRegistrar registro;
   Hotel hotelesc;
-  Habitacion hab;
   JPReserva jpreserva;
   SQLHabitacion_Reserva habitacionRes = new SQLHabitacion_Reserva();
   CajaHotel hotelsel;
   CajaHabitacion cajaHab;
   SQLHotel conexHotel = new SQLHotel();
-  UIInforme ui = new UIInforme();
+  UIInforme ui = new UIInforme();//No borrar da formato a los cuadros de advertencia 
   SQLHabitacion conexHabitacion = new SQLHabitacion();
   ArrayList<Hotel> listahotel;
   ArrayList<Reserva> listareserva = new ArrayList<>();
@@ -72,26 +71,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
   public PaginaPrincipal() throws ClassNotFoundException, SQLException, ParseException {
     initComponents();
     setLocationRelativeTo(null);
-    habitacionSelect = new ArrayList<>();
-    boton = new JButtonRound(cont);
-    logo = new JButton(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Logo/logo.png"))));
-    registro = new JPRegistrar();
-    jpreserva = new JPReserva();
-    lista = new ListaHoteles();
-    inicio = new JPIniciarSesion();
-    iniciar = inicio.getJBInicio();
-    registrar = registro.getjBRegistro();
-    habitacionreserva = new ArrayList<>();
-    boton = new JButtonRound(reservar);
-    boton = new JButtonRound(jbRegistrar);
-    boton = new JButtonRound(JbIniciar);
-    boton = new JButtonRound(cerrarSesion);
-    boton = new JButtonRound(misReservas);
-    boton = new JButtonRound(atras);
-    this.setMinimumSize(new Dimension(1000,600));
-    jPBarra.setPreferredSize(new Dimension(1000, 24));
-    encabezado.setLayout(new AbsoluteLayout());
-    encabezado.setBackground(new Color(252,195,95));
+    
+    inicializarElementosPantalla();
+    
     boton.botonCerrar(cerrarSesion);
     boton.misReservas(misReservas);
     boton.botonReserva(reservar);
@@ -106,6 +88,45 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     contenido.add(lista, BorderLayout.CENTER);
     cerrarSesion.setVisible(false);
     misReservas.setVisible(false);
+    
+    
+    funcionalidadIniciarSesion();
+    funcionalidadRegistrar();
+    funcionalidadReservar();
+    funcionalidadCerrarSesion();
+    funcionalidadMisReservas();
+    regresarPantallaPrincipalConLogo();   
+    funcionalidadAtras();
+    
+    encabezado.add(cerrarSesion, new AbsoluteConstraints(890, 20, -1, -1));
+    encabezado.add(misReservas, new AbsoluteConstraints(770, 20, -1, -1));
+    agregarHotel();
+  }
+  
+   public final void inicializarElementosPantalla() throws ParseException, ClassNotFoundException, SQLException{
+       habitacionSelect = new ArrayList<>();
+        boton = new JButtonRound(cont);
+        logo = new JButton(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Assets/Logo/logo.png"))));
+        registro = new JPRegistrar();
+        jpreserva = new JPReserva();
+        lista = new ListaHoteles();
+        inicio = new JPIniciarSesion();
+        iniciar = inicio.getJBInicio();
+        registrar = registro.getjBRegistro();
+        habitacionreserva = new ArrayList<>();
+        boton = new JButtonRound(reservar);
+        boton = new JButtonRound(jbRegistrar);
+        boton = new JButtonRound(JbIniciar);
+        boton = new JButtonRound(cerrarSesion);
+        boton = new JButtonRound(misReservas);
+        boton = new JButtonRound(atras);
+        this.setMinimumSize(new Dimension(1000,600));
+        jPBarra.setPreferredSize(new Dimension(1000, 24));
+        encabezado.setLayout(new AbsoluteLayout());
+        encabezado.setBackground(new Color(252,195,95));
+   }
+  
+  public final void funcionalidadIniciarSesion(){
     iniciar.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent me) {
@@ -120,7 +141,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         }
       }
     });
-
+  }
+  public final void funcionalidadRegistrar(){
     registrar.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent me) {
@@ -135,8 +157,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           encabezado.validate();
         }
       }
-    });
-    
+    }); 
+  }
+  public final void funcionalidadReservar(){
     reservar.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent me) {
@@ -177,9 +200,11 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
       }}
-    });
-    
-    cerrarSesion.addMouseListener(new MouseAdapter() {
+    });  
+  }
+  
+  public final void funcionalidadCerrarSesion(){
+  cerrarSesion.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
@@ -196,13 +221,14 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
       }
-});
-    
-    misReservas.addMouseListener(new MouseAdapter() {
+    });    
+  }
+  
+  public final void funcionalidadMisReservas(){
+      misReservas.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
-        
         try {
         jfreservas = new JFReserva(){
           @Override
@@ -211,22 +237,20 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             super.dispose();
           }
         };
-          //inicio.add(iniciar,  new AbsoluteConstraints(30, 270, -1, -1));
-          //registro.add(registrar, new AbsoluteConstraints(30, 330, -1, -1));
-          //jfreservas.habilitarPanel(inicio, registro, "Registrar");
           jfreservas.ingreso(cliente);
           jfreservas.agregarReservas();
           jfreservas.setVisible(true);
-          
           dispose();
          } catch (ParseException | SQLException | ClassNotFoundException ex) {
         Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
       }
     }
-    
-});    
-    logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    logo.addMouseListener(new MouseAdapter() {
+    });
+  }
+  
+  public final void regresarPantallaPrincipalConLogo(){
+      logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+      logo.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
@@ -237,20 +261,22 @@ public class PaginaPrincipal extends javax.swing.JFrame {
           Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
       }
-});
-    
-    atras.addMouseListener(new MouseAdapter() {
+    });
+  }
+  
+  public final void funcionalidadAtras(){
+      atras.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
         if(listaHab.isVisible()){
-        limpiar();
-        try {
-          agregarHotel();
-        } catch (ClassNotFoundException | SQLException ex) {
-          Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            limpiar();
+            try {
+              agregarHotel();
+            } catch (ClassNotFoundException | SQLException ex) {
+              Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-      }
       if(jpreserva.isVisible()){
         jpreserva.Informacion.setVisible(false);
         jpreserva.Habitacion.setVisible(false);
@@ -264,12 +290,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         contenido.validate();
       }
     }
-});
-    encabezado.add(cerrarSesion, new AbsoluteConstraints(890, 20, -1, -1));
-    encabezado.add(misReservas, new AbsoluteConstraints(770, 20, -1, -1));
-    agregarHotel();
-  }
-    
+    });
+  }  
+  
   public void agregarHotel( ) throws ClassNotFoundException, SQLException{
     listaHab = new ListaHabitaciones();
     listahotel = conexHotel.listarHoteles();
@@ -307,7 +330,34 @@ public class PaginaPrincipal extends javax.swing.JFrame {
   public void agregarHabitacion() throws ClassNotFoundException, SQLException{
     boton.botonContinuar(cont);
     cont.addActionListener(new ActionListener() {
-      @Override
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if (!habitacionreserva.isEmpty()) {
+                jpreserva.Informacion.add(reservar,new AbsoluteConstraints(400, 370,-1, -1));
+                contenido.add(jpreserva, BorderLayout.CENTER);
+                jpreserva.getInformacion().add(atras, new AbsoluteConstraints(280, 370,-1,-1));
+                jpreserva.setVisible(true);
+                jpreserva.getHabitacion().setVisible(true);
+                jpreserva.getInformacion().setVisible(true);
+                //listaHab.panel.setVisible(false);
+                //listaHab.pie.setVisible(false);
+                //listaHab.busque.setVisible(false);
+                listaHab.setVisible(false);
+                lista.setVisible(false);
+                try {
+                    jpreserva.listarHabitaciones(habitacionreserva, hotelesc.getNombre(), cliente.getNombre(), cliente.getPais());
+                } catch (ParseException ex) {
+                    Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                contenido.validate();
+            } else {
+                JOptionPane.showMessageDialog(null, "Seleccione una o mas habitaciones", "", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Objects.requireNonNull(PaginaPrincipal.this.getClass().getResource("/Assets/Dialogo/error.png"))));
+            }
+        }
+});
+
+      //EN EL MERGE ESTO SE DUPLICO
+    /*@Override
       public void actionPerformed(ActionEvent ae){
         if(habitacionreserva.size() != 0){
           jpreserva.Informacion.add(reservar,new AbsoluteConstraints(400, 370,-1, -1));
@@ -330,8 +380,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         }else{
           JOptionPane.showMessageDialog(null, "Seleccione una o mas habitaciones", "",JOptionPane.PLAIN_MESSAGE, new ImageIcon((Objects.requireNonNull(getClass().getResource("/Assets/Dialogo/error.png")))));
         }
-      }
-    });
+    });*/
+    
     for (Habitacion habitacion : listahabitacion) {
       cajaHab = new CajaHabitacion(habitacion) {
         @Override
